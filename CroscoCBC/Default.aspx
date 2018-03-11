@@ -175,11 +175,72 @@
                   }
                 }
             </script>
+           
+            <script>
+        function fnExcelReport(e) {
+            $(".truncatedData").hide();
+            $(".completeData").show();
+            //alert("Hello! Dawood.");
+            var tab_text = "<table border='2px'>";
+            var tab_inner = "";
+            var textRange; var j = 0;
+            tab = document.getElementById('mytb1'); // id of table
+            //tab = document.getElementById('rpgridview'); // id of table
+            for (j = 0 ; j < tab.rows.length ; j++) {
+                tab_inner = tab_inner + "<tr>"
+                for (k = 0 ; k < tab.rows[j].cells.length - 1 ; k++) {
+                    tab_inner = tab_inner + "<td>" + tab.rows[j].cells[k].innerHTML + "</td>";
+                }
+                tab_inner = tab_inner + "</tr>";
+                //tab_text=tab_text+"</tr>";
+            }
+            tab_text = tab_text + tab_inner + "</table>";
+            //tab_text = tab_text.replace(/<A[^>]*>|<\/A>/gi, "");//remove if u want links in your table
+            //tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+            //tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+            var ua = window.navigator.userAgent;
+            var msie = ua.indexOf("MSIE ");
+            if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) // If Internet Explorer
+            {
+
+                txtArea1.document.open("txt/html", "replace");
+                txtArea1.document.write(tab_text);
+                txtArea1.document.close();
+                txtArea1.focus();
+                sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+
+                document.open("txt/html", "replace");
+                document.write(tab_text);
+                document.close();
+
+                sa = document.execCommand("SaveAs", true, "Yourfilename.xls");
+            }
+            else {//other browser 
+                var a = document.createElement('a');
+                var data_type = 'data:application/vnd.ms-excel';
+                var table_div = tab_text;    //Your tab_text   
+                var table_html = table_div.replace(/ /g, '%20');
+                //alert(table_html)
+                a.href = data_type + ', ' + table_html;
+                //setting the file name
+                a.download = 'exported_table.xls';
+                //triggering the function
+                a.click();
+
+            }
+        
+            return (sa);
+
+        }
+        $(".truncatedData").show();
+        $(".completeData").hide();
+    </script>        
         <div class="col-md-12 text-center">
             <ul class="pagination pagination-lg pager" id="myPager"></ul>
         </div>
         </div>
-
+        <iframe id="txtArea1" style="display:none"></iframe>
+        <button id="btnExport" onclick="fnExcelReport();"> EXPORT</button>
         <h1>ASP.NET</h1>
         <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
         <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
