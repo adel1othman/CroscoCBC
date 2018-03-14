@@ -6,6 +6,43 @@
     <script src="Scripts/dataTables.bootstrap.min.js"></script>
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link href="Content/dataTables.bootstrap.min.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
+    <link href="Content/datatables.css" rel="stylesheet" />
+    <link href="Content/datatables.min.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+    
+    <script src="Scripts/datatables.js"></script>
+    <script src="Scripts/datatables.min.js"></script>
+<%--<script src="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table.min.js"></script>
+    <link rel="stylesheet" href="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table-all.min.css" />
+    <script>
+        var React = require('react');
+        var ReactDOM = require('react-dom');
+        var ReactBsTable  = require('react-bootstrap-table');
+        var BootstrapTable = ReactBsTable.BootstrapTable;
+        var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
+
+        var products = [{
+              id: 1,
+              name: "Product1",
+              price: 120
+          }, {
+              id: 2,
+              name: "Product2",
+              price: 80
+          }];
+
+        ReactDOM.render(
+          <BootstrapTable data={products} striped hover>
+              <TableHeaderColumn isKey dataField='id'>Product ID</TableHeaderColumn>
+              <TableHeaderColumn dataField='name'>Product Name</TableHeaderColumn>
+              <TableHeaderColumn dataField='price'>Product Price</TableHeaderColumn>
+          </BootstrapTable>,
+          document.getElementById('basic')
+        );
+    </script>--%>
 
     <div class="jumbotron">
         <div>
@@ -15,9 +52,65 @@
         </div>
         <script>
             $(document).ready(function() {
-            $('#mytb1').DataTable();
-        } );
+                $('#mytb1').DataTable();
+            } );
         </script>
+        <%--<script>
+            $(document).ready(function() {
+                $('#mytb1').DataTable( {
+                    'lengthMenu': [[10, 25, 50, , 100, -1], [10, 25, 50, 100, 'All']]
+                } );
+            } );
+        </script>--%>
+        <script>
+            var table = $('#mytb1').DataTable();
+ 
+            $('#mytb1 tbody').on( 'click', 'td', function () {
+                alert( table.cell( this ).data() );
+            });
+        </script>
+        <script>
+            $('#mytb1').DataTable( {
+                select: true
+            } );
+        </script>
+        <%--pokazuje row<script>
+            $(document).ready(function() {
+                var table = $('#mytb1').DataTable();
+     
+                $('#mytb1 tbody').on('click', 'tr', function () {
+                    var data = table.row( this ).data();
+                    alert( 'You clicked on '+data[0]+'\'s row' );
+                } );
+            } );
+        </script>--%>
+ 
+    <%--<script>
+        $("#mytb1").DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": "scripts/ids-arrays.php",
+                "rowCallback": function( row, data ) {
+                    if ( $.inArray(data.DT_RowId, selected) !== -1 ) {
+                        $(row).addClass('selected');
+                    }
+                }
+            });
+ 
+            $('#mytb1 tbody').on('click', 'tr', function () {
+                var id = this.id;
+                var index = $.inArray(id, selected);
+ 
+                if ( index === -1 ) {
+                    selected.push( id );
+                } else {
+                    selected.splice( index, 1 );
+                }
+ 
+                $(this).toggleClass('selected');
+            } );
+        } );
+    </script>--%>
         <iframe id="txtArea1" style="display:none"></iframe>
         <button id="btnExport" onclick="fnExcelReport();"> EXPORT</button>
     <script>
