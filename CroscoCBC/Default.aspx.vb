@@ -11,8 +11,8 @@ Public Class _Default
             Dim html As New StringBuilder()
 
             'Table start.
-            html.Append("<table id='mytb1' border = '1' cellspacing='1' class='tablesorter'>")
-
+            'html.Append("<table id='mytb1' border = '1' cellspacing='1' class='tablesorter'>")
+            html.Append("<table id='mytb1' Class='table table-striped table-bordered' style='width:100%'>")
             'Building the Header row.
             html.Append("<thead>")
             html.Append("<tr>")
@@ -35,7 +35,7 @@ Public Class _Default
             Next
             html.Append("</tr>")
             html.Append("</thead>")
-            html.Append("<tbody id='myTable'>")
+            'html.Append("<tbody id='myTable'>")
             'Building the Data rows.
             For Each row As DataRow In dt.Rows
                 html.Append("<tr class='item'>")
@@ -47,7 +47,7 @@ Public Class _Default
                 html.Append("</tr>")
 
             Next
-            html.Append("</tbody>")
+            'html.Append("</tbody>")
             'Table end.
             html.Append("</table>")
 
@@ -75,5 +75,15 @@ Public Class _Default
             End Using
         End Using
     End Function
+    'Protected Sub ExportToExcel(sender As Object, e As EventArgs)
+    '    Response.Clear()
+    '    Response.Buffer = True
+    '    Response.AddHeader("content-disposition", "attachment;filename=HTML.xls")
+    '    Response.Charset = ""
+    '    Response.ContentType = "application/vnd.ms-excel"
+    '    Response.Output.Write(Request.Form(hfGridHtml.UniqueID))
+    '    Response.Flush()
+    '    Response.End()
+    'End Sub
 
 End Class

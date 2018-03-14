@@ -16,17 +16,7 @@
 
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-    <link href="http://mottie.github.io/tablesorter/css/theme.default.css" rel="stylesheet">
-     
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.9.1/jquery.tablesorter.min.js"></script>
     
-    <script>
-        $(function(){
-            $("#mytb1").tablesorter({ widgets: ['zebra'] });
-        });
-    </script>
-    <script src="/lib/w3.js"></script>
 </head>
 <body>
     <form runat="server">
@@ -50,7 +40,17 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
-
+    <%--head<link href="http://mottie.github.io/tablesorter/css/theme.default.css" rel="stylesheet">
+     
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.9.1/jquery.tablesorter.min.js"></script>
+    
+    <script>
+        $(function(){
+            $("#mytb1").tablesorter({ widgets: ['zebra'] });
+        });
+    </script>head--%>
+    
         <div class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
