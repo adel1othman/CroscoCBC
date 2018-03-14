@@ -46,6 +46,8 @@
 
     <div class="jumbotron">
         <div>
+            <input id="addRow" type="button" value="add" />
+        
         <asp:Panel ID="Panel2" runat="server">
             
         </asp:Panel>
@@ -61,6 +63,16 @@
                     'lengthMenu': [[10, 25, 50, , 100, -1], [10, 25, 50, 100, 'All']]
                 } );
             } );
+
+            var table = $('#example').DataTable();
+ 
+            alert(
+                'Number of row entries: '+
+                table
+                    .column( 0 )
+                    .data()
+                    .length
+            );
         </script>--%>
         <script>
             var table = $('#mytb1').DataTable();
@@ -68,6 +80,28 @@
             $('#mytb1 tbody').on( 'click', 'td', function () {
                 alert( table.cell( this ).data() );
             });
+        </script>
+        <script>
+        $(document).ready(function() {
+            var t = $('#mytb1').DataTable();
+            var counter = 1;
+ 
+            $('#addRow').on( 'click', function () {
+                t.row.add( [
+                    counter +'.1',
+                    counter +'.2',
+                    counter +'.3',
+                    counter +'.4',
+                    counter + '.5',
+                    counter +'.6'
+                ] ).draw( false );
+ 
+                counter++;
+            } );
+ 
+            // Automatically add a first row of data
+            //$('#addRow').click();
+        } );
         </script>
         <script>
             $('#mytb1').DataTable( {
