@@ -1,4 +1,6 @@
 ﻿Imports System.Data.SqlClient
+Imports System.Web.Services
+Imports System.Web.Script.Services
 Public Class _Default
     Inherits System.Web.UI.Page
 
@@ -40,8 +42,10 @@ Public Class _Default
             For Each row As DataRow In dt.Rows
                 html.Append("<tr class='item'>")
                 For Each column As DataColumn In dt.Columns
-                    html.Append("<td>")
+                    html.Append("<td Class='txtBox'>")
+                    html.Append("<span>")
                     html.Append(row(column.ColumnName))
+                    html.Append("</span>")
                     html.Append("</td>")
                 Next
                 html.Append("</tr>")
@@ -86,4 +90,42 @@ Public Class _Default
     '    Response.End()
     'End Sub
 
+
+    <WebMethod()>
+    <ScriptMethod()>
+    Public Shared Sub SaveUser(user As User)
+        Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
+        'Dim constr As String = ConfigurationManager.ConnectionStrings("constr").ConnectionString
+        Using con As New SqlConnection(constr)
+            Using cmd As New SqlCommand("INSERT INTO CROSCO_CBC VALUES(@Ime, @Prezime)")
+                cmd.CommandType = CommandType.Text
+                cmd.Parameters.AddWithValue("@Ime", user.Ime)
+                cmd.Parameters.AddWithValue("@Prezime", user.Prezime)
+                cmd.Connection = con
+                con.Open()
+                cmd.ExecuteNonQuery()
+                con.Close()
+            End Using
+        End Using
+    End Sub
+End Class
+Public Class User
+    Public Property Ime() As String
+        Get
+            Return _Ime
+        End Get
+        Set(value As String)
+            _Ime = value
+        End Set
+    End Property
+    Private _Ime As String
+    Public Property Prezime() As String
+        Get
+            Return _Prezime
+        End Get
+        Set(value As String)
+            _Prezime = value
+        End Set
+    End Property
+    Private _Prezime As String
 End Class

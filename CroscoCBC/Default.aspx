@@ -1,6 +1,34 @@
 ﻿<%@ Page Title="Home Page" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.vb" Inherits="CroscoCBC._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <div>
+            <asp:TextBox ID="t11" runat="server"  />
+            <asp:TextBox ID="t22" runat="server"  />
+            <asp:Button ID="btnSave" Text="Save" runat="server" />
+        </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://cdn.jsdelivr.net/json2/0.1/json2.js"></script>
+    <script>
+        $(function () {
+            $("[id*=btnSave]").bind("click", function () {
+                var user = {};
+                user.Ime = $("[id*=t11]").val();
+                user.Prezime = $("[id*=t22]").val();
+                $.ajax({
+                    type: "POST",
+                    url: "Default.aspx/SaveUser",
+                    data: '{user: ' + JSON.stringify(user) + '}',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        alert("User has been added successfully.");
+                        window.location.reload();
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
     <script src="Scripts/jquery-1.12.4.js"></script>
     <script src="Scripts/jquery.dataTables.min.js"></script>
     <script src="Scripts/dataTables.bootstrap.min.js"></script>
@@ -13,6 +41,14 @@
 
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
     
+   
+    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
+   <%-- <link rel="stylesheet" href="//resources/demos/style.css"/>--%>
+   
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <script src="Scripts/datatables.js"></script>
     <script src="Scripts/datatables.min.js"></script>
 <%--<script src="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table.min.js"></script>
@@ -47,67 +83,61 @@
     <div class="jumbotron">
         <div>
             <input id="addRow" type="button" value="add" />
-        
+            <input id="DeleteRow" type="button" value="Delete" />
+            <input id="create-user" type="button" value="Edit" />
+            <input id="insertbtm" type="button" value="Insert" onclick="insret();" />
         <asp:Panel ID="Panel2" runat="server">
             
         </asp:Panel>
         </div>
         <script>
-            $(document).ready(function() {
-                $('#mytb1').DataTable();
-            } );
-        </script>
-        <%--<script>
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('#mytb1').DataTable( {
-                    'lengthMenu': [[10, 25, 50, , 100, -1], [10, 25, 50, 100, 'All']]
+                select: true
                 } );
-            } );
-
-            var table = $('#example').DataTable();
+                var table = $('#mytb1').DataTable();
  
-            alert(
-                'Number of row entries: '+
-                table
-                    .column( 0 )
-                    .data()
-                    .length
-            );
-        </script>--%>
-        <script>
-            var table = $('#mytb1').DataTable();
+                $('#mytb1 tbody').on( 'click', 'tr', function () {
+                    if ( $(this).hasClass('selected') ) {
+                        $(this).removeClass('selected');
+                    }
+                    else {
+                        table.$('tr.selected').removeClass('selected');
+                        $(this).addClass('selected');
+                    }
+                } );
  
-            $('#mytb1 tbody').on( 'click', 'td', function () {
-                alert( table.cell( this ).data() );
-            });
-        </script>
-        <script>
-        $(document).ready(function() {
-            var t = $('#mytb1').DataTable();
-            var counter = 1;
+                $('#DeleteRow').click( function () {
+                    table.row('.selected').remove().draw( false );
+                });
+                var t = $('#mytb1').DataTable();
+                var counter = 1;
  
-            $('#addRow').on( 'click', function () {
-                t.row.add( [
-                    counter +'.1',
-                    counter +'.2',
-                    counter +'.3',
-                    counter +'.4',
-                    counter + '.5',
-                    counter +'.6'
-                ] ).draw( false );
+                $('#addRow').on( 'click', function () {
+                    t.row.add( [
+                        counter +'.1',
+                        counter +'.2',
+                        counter +'.3',
+                        counter +'.4',
+                        counter + '.5',
+                        counter +'.6'
+                    ] ).draw( false );
  
-                counter++;
-            } );
+                    counter++;
+                } );
  
             // Automatically add a first row of data
             //$('#addRow').click();
-        } );
-        </script>
-        <script>
-            $('#mytb1').DataTable( {
-                select: true
+                var table1 = $('#mytb1').DataTable();
+ 
+                //$('#mytb1 tbody').on( 'click', 'td', function () {
+                //    alert( table1.cell( this ).data() );
+                //});
             } );
         </script>
+       
+       
+       
         <%--pokazuje row<script>
             $(document).ready(function() {
                 var table = $('#mytb1').DataTable();
@@ -220,7 +250,169 @@
     </script>
         <p>Date: <input type="text" id="datepicker"></p>--%>
         
-        
+    <script>
+      $( function() {
+        var dialog, form,
+ 
+          // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+          emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+          name = $( "#name" ),
+          email = $( "#email" ),
+          password = $( "#password" ),
+          allFields = $( [] ).add( name ).add( email ).add( password ),
+          tips = $( ".validateTips" );
+ 
+        function updateTips( t ) {
+          tips
+            .text( t )
+            .addClass( "ui-state-highlight" );
+          setTimeout(function() {
+            tips.removeClass( "ui-state-highlight", 1500 );
+          }, 500 );
+        }
+ 
+        function checkLength( o, n, min, max ) {
+          if ( o.val().length > max || o.val().length < min ) {
+            o.addClass( "ui-state-error" );
+            updateTips( "Length of " + n + " must be between " +
+              min + " and " + max + "." );
+            return false;
+          } else {
+            return true;
+          }
+        }
+ 
+        function checkRegexp( o, regexp, n ) {
+          if ( !( regexp.test( o.val() ) ) ) {
+            o.addClass( "ui-state-error" );
+            updateTips( n );
+            return false;
+          } else {
+            return true;
+          }
+        }
+ 
+        function addUser() {
+          var valid = true;
+          allFields.removeClass( "ui-state-error" );
+ 
+          valid = valid && checkLength( name, "username", 3, 16 );
+          valid = valid && checkLength( email, "email", 6, 80 );
+          valid = valid && checkLength( password, "password", 5, 16 );
+ 
+          valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+          valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
+          valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+ 
+          if ( valid ) {
+            $( "#users tbody" ).append( "<tr>" +
+              "<td>" + name.val() + "</td>" +
+              "<td>" + email.val() + "</td>" +
+              "<td>" + password.val() + "</td>" +
+            "</tr>" );
+            dialog.dialog( "close" );
+          }
+          return valid;
+        }
+ 
+        dialog = $( "#dialog-form" ).dialog({
+          autoOpen: false,
+          height: 400,
+          width: 350,
+          modal: true,
+          buttons: {
+            "Create an account": addUser,
+            Cancel: function() {
+              dialog.dialog( "close" );
+            }
+          },
+          close: function() {
+            form[ 0 ].reset();
+            allFields.removeClass( "ui-state-error" );
+          }
+        });
+ 
+        form = dialog.find( "form" ).on( "submit", function( event ) {
+          event.preventDefault();
+          addUser();
+        });
+ 
+        $( "#create-user" ).button().on( "click", function() {
+          dialog.dialog( "open" );
+        });
+      } );
+    </script>    
+         <div id="dialog-form" title="Create new user">
+          <p class="validateTips">All form fields are required.</p>
+ 
+            <form>
+                <fieldset>
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
+
+                    <!-- Allow form submission with keyboard without duplicating the dialog button -->
+                    <input type="submit" tabindex="-1" style="position: absolute; top: -1000px">
+                </fieldset>
+            </form>
+         </div>
+ 
+ 
+        <div id="users-contain" class="ui-widget">
+            <h1>Existing Users:</h1>
+            <table id="users" class="ui-widget ui-widget-content">
+                <thead>
+                    <tr class="ui-widget-header ">
+                        <th style="width: 92px">Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="width: 92px">John Doe</td>
+                        <td>john.doe@example.com</td>
+                        <td>johndoe1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <script>
+            $(document).ready(function() {
+            $(document).on('click', '#mytb1 td', function () {
+                    var html = $(this).text()
+                    var input = $('<input type="text" />');
+                    input.val(html);
+                    $(this).replaceWith(input);
+                    $('#mytb1 input').focus();
+            });
+            
+            $(document).on('blur', '#mytb1 input', function(){
+                $(this).replaceWith('<td class="asset_value"><span>'+this.value+'</span></td>')
+            })
+        });
+        </script>
+        <script>
+            function insret() {
+                var name = document.getElementById("t1").value;
+                var surname = document.getElementById("t2").value;
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open('Get', 'InsertPage.aspx?nm=' + name + '&sr=' + surname, true);
+                xmlhttp.send(null);
+                document.getElementById("t1").value = "";
+                document.getElementById("t2").value = "";
+                alert("ažurirano");
+        };
+        </script>
+       
+            <div>
+                <input type="text" id="t1" />
+                <input type="text" id="t2" />
+                               
+            </div>
         
         <h1>ASP.NET</h1>
         <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
