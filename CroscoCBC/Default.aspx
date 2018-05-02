@@ -29,6 +29,8 @@
             });
         });
     </script>
+    
+
     <script src="Scripts/jquery-1.12.4.js"></script>
     <script src="Scripts/jquery.dataTables.min.js"></script>
     <script src="Scripts/dataTables.bootstrap.min.js"></script>
@@ -41,14 +43,19 @@
 
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
     
-   
+
+    <%--<link  href="../Jquery/jquery.multiselect.css" rel="stylesheet"/>
+    <link  href="../Jquery/style.css" rel="stylesheet" />
+    <link  href="../Jquery/prettify.css" rel="stylesheet" />
+    <script  src="../Jquery/jquery.multiselect.js"></script>
+    <script  src="../Jquery/prettify.js"></script>--%>
     
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"/>
    <%-- <link rel="stylesheet" href="//resources/demos/style.css"/>--%>
-   
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="Scripts/datatables.js"></script>
     <script src="Scripts/datatables.min.js"></script>
 <%--<script src="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table.min.js"></script>
@@ -83,33 +90,40 @@
     <div class="jumbotron">
         <div>
             <input id="addRow" type="button" value="add" />
-            <input id="DeleteRow" type="button" value="Delete" />
+            <input id="DeleteRow" type="button" value="Delete" onclick="deleteRow();" />
             <input id="create-user" type="button" value="Edit" />
             <input id="insertbtm" type="button" value="Insert" onclick="insret();" />
-        <asp:Panel ID="Panel2" runat="server">
+            <input id="displaybtm" type="button" value="Display" onclick="display();" />
+            <input id="updatebtm" type="button" value="Update" onclick="updateRow();" />
+                        
+        <asp:Panel ID="Panel2" ClientIDMode="Static" runat="server">
             
         </asp:Panel>
         </div>
+         <div id="dddd1">
+        </div>
         <script>
             $(document).ready(function () {
-                $('#mytb1').DataTable( {
-                select: true
+                $('#mytb1').DataTable({
+                    select: true                
                 } );
-                var table = $('#mytb1').DataTable();
+
+                var table1 = $('#mytb1').DataTable();
  
                 $('#mytb1 tbody').on( 'click', 'tr', function () {
-                    if ( $(this).hasClass('selected') ) {
+                    if ($(this).hasClass('selected') ) {
                         $(this).removeClass('selected');
                     }
                     else {
-                        table.$('tr.selected').removeClass('selected');
+                        table1.$('tr.selected').removeClass('selected');
                         $(this).addClass('selected');
                     }
                 } );
  
                 $('#DeleteRow').click( function () {
-                    table.row('.selected').remove().draw( false );
+                    table1.row('.selected').remove().draw( false );
                 });
+
                 var t = $('#mytb1').DataTable();
                 var counter = 1;
  
@@ -124,16 +138,174 @@
                     ] ).draw( false );
  
                     counter++;
-                } );
+                });
+                
  
             // Automatically add a first row of data
             //$('#addRow').click();
-                var table1 = $('#mytb1').DataTable();
- 
+
+                //var table1 = $('#mytb1').DataTable();
                 //$('#mytb1 tbody').on( 'click', 'td', function () {
                 //    alert( table1.cell( this ).data() );
                 //});
-            } );
+                $(document).on('click', '#mytb1 td', function () {
+                    var html = $(this).text()
+                    var input = $('<input type="text" />');
+                    input.val(html);
+                    $(this).replaceWith(input);
+                    $('#mytb1 input').focus();
+                });
+                var table2 = $('#mytb1').DataTable();
+                $('#mytb1 tbody').on('click', 'td', function () {
+                    var idx = table2.cell(this).index().column;
+                    var title = table2.column(idx).header();
+                    var colhed1 = [];
+                    var colhed;
+                    var provjera = $(title).html();
+                    if (provjera == undefined) {
+                        colhed = colhed1[0];
+                    }
+                    else {
+                        colhed1.shift();
+                        colhed1.push(provjera);
+                        colhed = colhed1[0];
+                    }
+                    
+                    getcolhed(colhed);
+                    //alert('Column title clicked on: ' + $(title).html());
+                    //alert( 'REd title clicked on: '+ idx );
+                });
+                
+                $('#mytb1 tbody').on('click', 'tr', function () {
+                    var data = table2.row(this).data();
+                    //alert(data[0]);
+                    var redid1 = [];
+                    var redid;
+                    if (data[0] == undefined) {
+                        redid = redid1[0]; 
+                    }
+                    else {
+                        redid1.push(data[0]);
+                        redid = redid1[0];
+                        var i = redid.length;
+                        i = i-13;
+                        redid = redid.substr(6, i);
+                    }
+                    
+                   
+                    getcolid(redid);
+                    //alert(redid);
+                    //var xmlhttp = new XMLHttpRequest();
+                    //xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&ched='+ colheadder + '&newva='+ newValueup + '&opr=update', false);
+                    //xmlhttp.send(null);
+                    //redid = "";
+                    
+                    
+                    //display();
+                    //window.location.reload();
+                });
+                var yhed1 = [];
+                var yhed;
+                function getcolhed(val)
+                {
+                    //var yhed1 = [];
+                    //var yhed;
+                    if (val == undefined) {
+                        yhed = yhed1[0];
+                        //alert(yhed);
+                        return yhed;
+                    }
+                    else {
+                        yhed1.shift();
+                        yhed1.push(val);
+                        yhed = yhed1[0];
+                        //alert(yhed);
+                        return yhed;
+                    }
+                }
+                var xhed1 = [];
+                var xhed; 
+                function getcolid(val1)
+                {
+                    if (val1 == undefined) {
+                        xhed = xhed1[0];
+                        //alert(xhed);
+                        return xhed;
+                    }
+                    else {
+                        xhed1.shift();
+                        xhed1.push(val1);
+                        xhed = xhed1[0];
+                        //alert(xhed);
+                        return xhed;
+                    }
+                    
+                }
+                var newValuup1 = [];
+                var newValuup;
+                $(document).on('blur', '#mytb1 input', function(){
+                    $(this).replaceWith('<td class="asset_value"><span>' + this.value + '</span></td>')
+                    var provjera1 = this.value;
+                    if (provjera1 == undefined) {
+                        newValuup = newValuup1[0];
+                    }
+                    else {
+                        newValuup1.shift();
+                        newValuup1.push(provjera1);
+                        newValuup = newValuup1[0];
+                    }
+
+                    
+                    var thiscol = getcolhed();
+                    var thisro = getcolid();
+
+                    //alert(newValueup);
+                    //alert(thiscol);
+                    //alert(thisro);
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open('Get', 'InsertPage.aspx?id=' + thisro + '&ched='+ thiscol + '&newva='+ newValuup + '&opr=update', false);
+                    xmlhttp.send(null);
+                    newValuup = '';
+                    thiscol = '';
+                    thisro = '';
+                
+                    
+                   
+                });
+
+                //var selected = [];
+                
+                //$('#mytb1').DataTable({
+                //    "processing": true,
+                //    "serverside": true,
+                //    "ajax": "/default.aspx",
+                //    "rowcallback": function( row, data ) {
+                //        if ( $.inarray(data.dt_rowid, selected) !== -1 ) {
+                //            $(row).addclass('selected');
+                //        }
+                //    }
+        
+                //});
+                
+                //$('#mytb1 tbody').on('click', 'tr', function () {
+                //    //var data = table.row( this ).data();           
+                //    //var id = data[0];
+                //    var id = this.id;
+                //    var index = $.inarray(id, selected);
+ 
+                //    if ( index === -1 ) {
+                //        selected.push( id );
+                //    } else {
+                //        selected.splice( index, 1 );
+                //    }
+ 
+                //    $(this).toggleclass('selected');
+                //});
+                ////var table = $('#mytb1').datatable();
+                //$('#DeleteRow').click( function () {
+                //    $('#mytb1').DataTable().row('.selected').remove().draw( false );
+                //});
+            });
         </script>
        
        
@@ -250,7 +422,7 @@
     </script>
         <p>Date: <input type="text" id="datepicker"></p>--%>
         
-    <script>
+    <%--<script>
       $( function() {
         var dialog, form,
  
@@ -379,33 +551,125 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div>--%>
+        
         <script>
-            $(document).ready(function() {
-            $(document).on('click', '#mytb1 td', function () {
-                    var html = $(this).text()
-                    var input = $('<input type="text" />');
-                    input.val(html);
-                    $(this).replaceWith(input);
-                    $('#mytb1 input').focus();
-            });
-            
-            $(document).on('blur', '#mytb1 input', function(){
-                $(this).replaceWith('<td class="asset_value"><span>'+this.value+'</span></td>')
-            })
-        });
-        </script>
-        <script>
+            function onSuccessCallBack() {
+                var xmlhttp = new XMLHttpRequest();
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200) {
+                    var resultText = xmlhttp.responseText;
+                    document.getElementById("mytb1").innerHTML = xmlhttp.responseText;
+                        console.log(resultText.length);
+                    $('#mytb1').DataTable();
+                    }
+                }
+
+            }
+
             function insret() {
                 var name = document.getElementById("t1").value;
                 var surname = document.getElementById("t2").value;
                 var xmlhttp = new XMLHttpRequest();
-                xmlhttp.open('Get', 'InsertPage.aspx?nm=' + name + '&sr=' + surname, true);
+                xmlhttp.open('Get', 'InsertPage.aspx?nm=' + name + '&sr=' + surname + '&opr=insert', true);
                 xmlhttp.send(null);
                 document.getElementById("t1").value = "";
                 document.getElementById("t2").value = "";
+                display();
                 alert("ažurirano");
-        };
+                //window.location.reload();
+            }
+            function deleteRow() {
+                
+                var trst = document.getElementsByClassName('selected').value;
+                alert(trst);
+                var table2 = $('#mytb1').DataTable();
+     
+                $('#mytb1 tbody').on('click', 'tr', function () {
+                    var data = table2.row(this).data();
+                    alert(data[0]);
+                    var redid = data[0];
+                    var i = redid.length;
+                    i = i-13;
+                    redid = redid.substr(6, i);
+                    alert(redid);
+                    
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&opr=delete', false);
+                    xmlhttp.send(null);
+                    redid = "";
+                
+                    alert("izbrisano");
+                    display();
+                    //window.location.reload();
+                } );
+            }
+            //function updateRow() {
+                
+            //    var trst = document.getElementsByClassName('selected').value;
+            //    alert(trst);
+            //    var table2 = $('#mytb1').DataTable();
+            //    $('#mytb1 tbody').on( 'click', 'td', function () {
+            //        var idx = table2.cell( this ).index().column;
+            //        var title = table2.column( idx ).header();
+ 
+            //        alert('Column title clicked on: ' + $(title).html());
+            //        alert( 'REd title clicked on: '+ idx );
+                
+            //    $('#mytb1 tbody').on('click', 'tr', function () {
+            //        var data = table2.row(this).data();
+            //        var colheadder = $(title).html();
+            //        alert(data[0]);
+            //         alert(colheadder);
+            //        var redid = data[0];
+            //        var i = redid.length;
+            //        i = i-13;
+            //        redid = redid.substr(6, i);
+            //        alert(redid);
+
+                    
+            //        var xmlhttp = new XMLHttpRequest();
+            //        xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&ched='+ colheadder + '&opr=update', false);
+            //        xmlhttp.send(null);
+            //        redid = "";
+                
+            //        alert("izbrisano");
+            //        //display();
+            //        //window.location.reload();
+            //        });
+            //    } );
+            //}
+            function display() {
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open('Get', 'InsertPage.aspx?opr=display', false);
+                //xmlhttp.onreadystatechange = onSuccessCallBack;
+                xmlhttp.send(null);
+                //document.getElementById("Panel2").value = xmlhttp.responseText;
+                //var tablica = document.getElementById("Panel2").value;
+                //var tablica = $('#Panel2').value;
+                //tablica= xmlhttp.responseText;
+                //document.getElementById("mytb1").innerHTML = xmlhttp.responseText;
+                    
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200) {
+                        var resultText = xmlhttp.responseText;
+                        document.getElementById("mytb1").innerHTML = xmlhttp.responseText;
+                        if ($.fn.DataTable.isDataTable("#mytb1")) {
+                            $('#mytb1').DataTable().clear().destroy();
+                            $('#mytb1').DataTable();
+                        }
+
+                        //$('#mytb1').DataTable();
+                        //$('#mytb1').DataTable().clear().destroy();
+
+                        //$('#mytb1').DataTable().fnDestroy();
+                            
+                    }
+                }
+                //document.getElementById("dddd1").value = xmlhttp.responseText;
+
+            } 
         </script>
        
             <div>
@@ -413,7 +677,66 @@
                 <input type="text" id="t2" />
                                
             </div>
+        <input id="pota" type="button" value="Potablice" onclick="potablicu();" />
         
+        <%--<script>
+        function potablicu() {
+            $.ajax({
+                type: "POST",
+                url: "InsertPage.aspx",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: OnSuccess,
+                failure: function (response) {
+                    alert(response.responseText);
+                    
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                    
+                }
+            });
+        };
+ 
+        function OnSuccess(response) {
+            var xmlDoc = $.parseXML(response.d);
+            var xml = $(xmlDoc);
+            var CBC = xml.find("CROSCO_CBC");
+            var table = $("#dvCBC table").eq(0).clone(true);
+            $("#dvCBC table").eq(0).remove();
+            $(CBC).each(function () {
+                $(".ID", table).html($(this).find("ID").text());
+                $(".column1", table).html($(this).find("column1").text());
+                $(".Ime", table).html($(this).find("Ime").text());
+                $(".Prezime", table).html($(this).find("Prezime").text());
+                $(".Pozicija", table).html($(this).find("Pozicija").text());
+                $(".Pozicija_engl", table).html($(this).find("Pozicija_engl").text());
+                $("#dvCBC").append(table).append("<br />");
+                table = $("#dvCBC table").eq(0).clone(true);
+            });
+        }
+        </script>
+               
+         <div id = "dvCBC">
+            <table border="1">
+            <tr>
+                <th>
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    <b><u><span class="ID"></span></u></b>
+                    <b><u><span class="column1"></span></u></b>
+                    <b><u><span class="Ime"></span></u></b>
+                    <b><u><span class="Prezime"></span></u></b>
+                    <b><u><span class="Pozicija"></span></u></b>
+                    <b><u><span class="Pozicija_engl"></span></u></b>
+                </td>
+            </tr>
+        </table>
+    
+        </div> --%>   
         <h1>ASP.NET</h1>
         <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
         <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a>,</p>

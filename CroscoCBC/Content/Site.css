@@ -78,6 +78,7 @@ label, input {
     }
     input.bottun {
         width: 95%;
+        padding: .4em;
     }
 
 fieldset {
