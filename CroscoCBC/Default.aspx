@@ -109,8 +109,25 @@
                 } );
 
                 var table1 = $('#mytb1').DataTable();
- 
-                $('#mytb1 tbody').on( 'click', 'tr', function () {
+                var redid1 = [];
+                $('#mytb1 tbody').on('click', 'tr', function () {
+                    var data = table1.row(this).data();
+                    
+                    //var redid;
+                    //if (data[0] == undefined) {
+                    //    redid = redid1[0]; 
+                    //}
+                    //else {
+                    //    redid1.shift();
+                    //    redid1.push(data[0]);
+                    //    redid = redid1[0];
+                    //    var i = redid.length;
+                    //    i = i-13;
+                    //    redid = redid.substr(6, i);
+                    //}
+                    
+                   
+                    //getcolid(redid);
                     if ($(this).hasClass('selected') ) {
                         $(this).removeClass('selected');
                     }
@@ -121,7 +138,12 @@
                 } );
  
                 $('#DeleteRow').click( function () {
-                    table1.row('.selected').remove().draw( false );
+                    table1.row('.selected').remove().draw(false);
+                    var thisro = getcolid();
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open('Get', 'InsertPage.aspx?id=' + thisro + '&opr=delete', false);
+                    xmlhttp.send(null);
+                    redid = "";
                 });
 
                 var t = $('#mytb1').DataTable();
@@ -580,29 +602,27 @@
                 //window.location.reload();
             }
             function deleteRow() {
-                
-                var trst = document.getElementsByClassName('selected').value;
-                alert(trst);
-                var table2 = $('#mytb1').DataTable();
+               
+                //var table2 = $('#mytb1').DataTable();
      
-                $('#mytb1 tbody').on('click', 'tr', function () {
-                    var data = table2.row(this).data();
-                    alert(data[0]);
-                    var redid = data[0];
-                    var i = redid.length;
-                    i = i-13;
-                    redid = redid.substr(6, i);
-                    alert(redid);
-                    
-                    var xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&opr=delete', false);
-                    xmlhttp.send(null);
-                    redid = "";
+                //$('#mytb1 tbody').on('click', 'tr', function () {
+                //    var data = table2.row(this).data();
+                //    alert(data[0]);
+                //    var redid = data[0];
+                //    var i = redid.length;
+                //    i = i-13;
+                //    redid = redid.substr(6, i);
                 
-                    alert("izbrisano");
-                    display();
-                    //window.location.reload();
-                } );
+                    
+                //var xmlhttp = new XMLHttpRequest();
+                //xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&opr=delete', false);
+                //xmlhttp.send(null);
+                //redid = "";
+                
+                alert("izbrisano");
+                //display();
+                //window.location.reload();
+            //} );
             }
             //function updateRow() {
                 
@@ -657,7 +677,9 @@
                         document.getElementById("mytb1").innerHTML = xmlhttp.responseText;
                         if ($.fn.DataTable.isDataTable("#mytb1")) {
                             $('#mytb1').DataTable().clear().destroy();
-                            $('#mytb1').DataTable();
+                            $('#mytb1').DataTable({
+                                select: true                
+                            } );
                         }
 
                         //$('#mytb1').DataTable();

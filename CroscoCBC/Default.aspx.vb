@@ -36,6 +36,9 @@ Public Class _Default
                 html.Append(column.ColumnName)
                 html.Append("</th>")
             Next
+            html.Append("<th style='cursor:pointer'>")
+            html.Append("Fun")
+            html.Append("</th>")
             html.Append("</tr>")
             html.Append("</thead>")
             'html.Append("<tbody id='myTable'>")
@@ -48,7 +51,11 @@ Public Class _Default
                     html.Append(row(column.ColumnName))
                     html.Append("</span>")
                     html.Append("</td>")
+
                 Next
+                html.Append("<td Class='btn'>")
+                html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
+                html.Append("</td>")
                 html.Append("</tr>")
 
             Next
@@ -136,6 +143,7 @@ Public Class _Default
                 html.Append("<span>")
                 html.Append(row(column.ColumnName))
                 html.Append("</span>")
+                html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
                 html.Append("</td>")
             Next
             html.Append("</tr>")

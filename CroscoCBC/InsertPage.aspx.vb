@@ -104,26 +104,29 @@ Partial Public Class InsertPage
                     Response.Write("</td>")
                 Next
                 'html.Append("</tr>")
+                Response.Write("<td Class='btn'>")
+                Response.Write("<input type='button' value='Delete' onclick='deleteRow();' />")
+                Response.Write("</td>")
                 Response.Write("</tr>")
             Next
             'html.Append("</tbody>")
             'Table end.
             Response.Write("</table>")
-            'ElseIf opr = "delete" Then
-            '    RowId = Request.QueryString("id").ToString()
+        ElseIf opr = "delete" Then
+            RowId = Request.QueryString("id").ToString()
 
-            '    Dim comstrin As String
-            '    comstrin = "DELETE FROM CROSCO_CBC WHERE ID =" & RowId
-            '    MsgBox(comstrin)
-            '    Dim con As New SqlConnection(constr)
-            '    Dim cmd As New SqlCommand
-            '    con.Open()
-            '    cmd = con.CreateCommand()
-            '    cmd.CommandType = CommandType.Text
-            '    cmd.CommandText = comstrin
-            '    cmd.ExecuteNonQuery()
+            Dim comstrin As String
+            comstrin = "DELETE FROM CROSCO_CBC WHERE ID =" & RowId
+            MsgBox(comstrin)
+            Dim con As New SqlConnection(constr)
+            Dim cmd As New SqlCommand
+            con.Open()
+            cmd = con.CreateCommand()
+            cmd.CommandType = CommandType.Text
+            cmd.CommandText = comstrin
+            cmd.ExecuteNonQuery()
 
-            '    con.Close()
+            con.Close()
         ElseIf opr = "update" Then
             Dim comstring As String
             RowId = Request.QueryString("id").ToString()
@@ -131,7 +134,7 @@ Partial Public Class InsertPage
             columhed = Request.QueryString("ched").ToString()
 
             comstring = "UPDATE CROSCO_CBC SET " & columhed & " = '" & newValu1 & "' WHERE ID = " & RowId
-            MsgBox(comstring & " " & RowId & " " & columhed & " " & newValu1)
+            'MsgBox(comstring & " " & RowId & " " & columhed & " " & newValu1)
 
 
             Dim con As New SqlConnection(constr)
