@@ -134,6 +134,7 @@ Partial Public Class InsertPage
             columhed = Request.QueryString("ched").ToString()
 
             comstring = "UPDATE CROSCO_CBC SET " & columhed & " = '" & newValu1 & "' WHERE ID = " & RowId
+            'script za rename column name sp_rename "dbo.CROSCO_CBC.Kadr#br#", "Kadrovski broj", 'COLUMN';
             'MsgBox(comstring & " " & RowId & " " & columhed & " " & newValu1)
 
 
@@ -153,7 +154,7 @@ Partial Public Class InsertPage
     Private Function GetData() As DataTable
         Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
         Using con As New SqlConnection(constr)
-            Using cmd As New SqlCommand("Select [ID], [Kadr#br#] AS column1, [Ime], [Prezime], [Pozicija], [Pozicija engl] AS Pozicija_engl FROM [CROSCO_CBC]")
+            Using cmd As New SqlCommand("Select [ID], [Kadrovski broj] AS Kadrovski_broj, [Ime], [Prezime], [Pozicija], [Pozicija engl] AS Pozicija_engl FROM [CROSCO_CBC]")
                 Using sda As New SqlDataAdapter()
                     cmd.Connection = con
                     sda.SelectCommand = cmd

@@ -77,7 +77,7 @@ Public Class _Default
     Private Function GetData() As DataTable
         Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
         Using con As New SqlConnection(constr)
-            Using cmd As New SqlCommand("Select [ID], [Kadr#br#] AS column1, [Ime], [Prezime], [Pozicija], [Pozicija engl] AS Pozicija_engl FROM [CROSCO_CBC]")
+            Using cmd As New SqlCommand("Select [ID], [Kadrovski broj] AS Kadrovski_broj, [Ime], [Prezime], [Pozicija], [Pozicija engl] AS Pozicija_engl FROM [CROSCO_CBC]")
                 Using sda As New SqlDataAdapter()
                     cmd.Connection = con
                     sda.SelectCommand = cmd
@@ -93,7 +93,7 @@ Public Class _Default
     Public Shared Function GetCROSCO_CBC() As String
         Dim constr As String = ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
         Using con As New SqlConnection(constr)
-            Using cmd As New SqlCommand("Select [ID], [Kadr#br#] AS column1, [Ime], [Prezime], [Pozicija], [Pozicija engl] AS Pozicija_engl FROM [CROSCO_CBC]")
+            Using cmd As New SqlCommand("Select [ID], [Kadrovski broj] AS Kadrovski_broj, [Ime], [Prezime], [Pozicija], [Pozicija engl] AS Pozicija_engl FROM [CROSCO_CBC]")
                 cmd.Connection = con
                 Dim ds As New DataSet()
                 Using sda As New SqlDataAdapter(cmd)

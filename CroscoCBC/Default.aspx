@@ -284,12 +284,41 @@
                     //alert(newValueup);
                     //alert(thiscol);
                     //alert(thisro);
-                    var xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open('Get', 'InsertPage.aspx?id=' + thisro + '&ched='+ thiscol + '&newva='+ newValuup + '&opr=update', false);
-                    xmlhttp.send(null);
-                    newValuup = '';
-                    thiscol = '';
-                    thisro = '';
+                    if (thiscol == "Fun") {
+
+                    }
+                    else if (thiscol == "Pozicija_engl") {
+                        thiscol = "[Pozicija engl]";
+                        var xmlhttp = new XMLHttpRequest();
+                        xmlhttp.open('Get', 'InsertPage.aspx?id=' + thisro + '&ched=' + thiscol + '&newva=' + newValuup + '&opr=update', false);
+                        xmlhttp.send(null);
+                        newValuup = '';
+                        thiscol = '';
+                        thisro = '';
+                    }
+                    else if (thiscol == "Kadrovski_broj") {
+                        thiscol = "[Kadrovski broj]";
+                        if (Number.isInteger(Number(newValuup))) {
+                            var xmlhttp = new XMLHttpRequest();
+                            xmlhttp.open('Get', 'InsertPage.aspx?id=' + thisro + '&ched=' + thiscol + '&newva=' + newValuup + '&opr=update', false);
+                            xmlhttp.send(null);
+                            newValuup = '';
+                            thiscol = '';
+                            thisro = '';
+
+                        }
+                        else {
+
+                        }
+                    }
+                    else {
+                        var xmlhttp = new XMLHttpRequest();
+                        xmlhttp.open('Get', 'InsertPage.aspx?id=' + thisro + '&ched=' + thiscol + '&newva=' + newValuup + '&opr=update', false);
+                        xmlhttp.send(null);
+                        newValuup = '';
+                        thiscol = '';
+                        thisro = '';
+                    }
                 
                     
                    
