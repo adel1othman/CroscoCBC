@@ -62,7 +62,7 @@ Partial Public Class InsertPage
             For Each column As DataColumn In dt.Columns
 
                 Dim stri As String
-                stri = "<th style='cursor: pointer; width: 21px;' aria-controls='mytb1'>"
+                stri = "<th style='cursor: pointer'>"
                 'stri = "<th onclick='sortTable(" & i & ")'>"
 
 
@@ -80,6 +80,9 @@ Partial Public Class InsertPage
                 'html.Append("</th>")
                 Response.Write("</th>")
             Next
+            Response.Write("<th style='cursor:pointer'>")
+            Response.Write("Fun")
+            Response.Write("</th>")
             'html.Append("</tr>")
             Response.Write("</tr>")
             'html.Append("</thead>")

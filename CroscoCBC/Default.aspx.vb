@@ -54,7 +54,9 @@ Public Class _Default
 
                 Next
                 html.Append("<td Class='btn'>")
-                html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
+                html.Append("<Delete>")
+                'html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
+
                 html.Append("</td>")
                 html.Append("</tr>")
 

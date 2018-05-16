@@ -105,36 +105,44 @@
         <script>
             $(document).ready(function () {
                 $('#mytb1').DataTable({
-                    select: true                
+                    //select: true     
+                    
+                    "columnDefs": [ {
+                        "targets": -1,
+                        "data": null,
+                        "defaultContent": "<button class='btn btn-danger'>Delete!</button>"
+                    } ]
                 } );
 
                 var table1 = $('#mytb1').DataTable();
                 var redid1 = [];
+
                 $('#mytb1 tbody').on('click', 'tr', function () {
                     var data = table1.row(this).data();
                     
-                    //var redid;
-                    //if (data[0] == undefined) {
-                    //    redid = redid1[0]; 
-                    //}
-                    //else {
-                    //    redid1.shift();
-                    //    redid1.push(data[0]);
-                    //    redid = redid1[0];
-                    //    var i = redid.length;
-                    //    i = i-13;
-                    //    redid = redid.substr(6, i);
-                    //}
-                    
-                   
-                    //getcolid(redid);
-                    if ($(this).hasClass('selected') ) {
-                        $(this).removeClass('selected');
+                    var redid;
+                    if (data[0] == undefined) {
+                        redid = redid1[0]; 
                     }
                     else {
-                        table1.$('tr.selected').removeClass('selected');
-                        $(this).addClass('selected');
+                        redid1.shift();
+                        redid1.push(data[0]);
+                        redid = redid1[0];
+                        var i = redid.length;
+                        i = i-13;
+                        redid = redid.substr(6, i);
                     }
+                    
+                   
+                    getcolid(redid);
+
+                    //if ($(this).hasClass('selected') ) {
+                    //    $(this).removeClass('selected');
+                    //}
+                    //else {
+                    //    table1.$('tr.selected').removeClass('selected');
+                    //    $(this).addClass('selected');
+                    //}
                 } );
  
                 $('#DeleteRow').click( function () {
@@ -170,12 +178,42 @@
                 //$('#mytb1 tbody').on( 'click', 'td', function () {
                 //    alert( table1.cell( this ).data() );
                 //});
+                
+                 $('#mytb1 tbody').on( 'click', 'button', function () {
+                    var data = table2.row( $(this).parents('tr') ).data();
+                    alert(data[0]);
+                    var redid = data[0];
+                    var i = redid.length;
+                    i = i-13;
+                    redid = redid.substr(6, i);                   
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&opr=delete', false);
+                    xmlhttp.send(null);
+                    redid = "";
+                     table2
+                         .row($(this).parents('tr'))
+                         .remove()
+                         .draw();
+                    
+
+                    //display();
+                } );
                 $(document).on('click', '#mytb1 td', function () {
                     var html = $(this).text()
                     var input = $('<input type="text" />');
                     input.val(html);
-                    $(this).replaceWith(input);
-                    $('#mytb1 input').focus();
+                    var thiscol = getcolhed();
+                    if (thiscol == "Fun") {
+                      
+                    }
+                    else if (thiscol == undefined) {
+                      
+                    }
+                    else {
+                        $(this).replaceWith(input);
+                        $('#mytb1 input').focus();
+                    }
+                    
                 });
                 var table2 = $('#mytb1').DataTable();
                 $('#mytb1 tbody').on('click', 'td', function () {
@@ -194,28 +232,36 @@
                     }
                     
                     getcolhed(colhed);
+                    //getColHedDelet(provjera);
                     //alert('Column title clicked on: ' + $(title).html());
                     //alert( 'REd title clicked on: '+ idx );
                 });
-                
+                //var yHedDelet1 = [];
+                //var yHedDelet;
+                //function getColHedDelet(valDel)
+                //{
+                //    //var yhed1 = [];
+                //    //var yhed;
+                //    if (valDel == undefined) {
+                //        yHedDelet = yHedDelet1[0];
+                //        //alert(yhed);
+                //        return yHedDelet;
+                //    }
+                //    else {
+                //        yHedDelet.shift();
+                //        yHedDelet.push(valDel);
+                //        yHedDelet = yHedDelet1[0];
+                //        //alert(yhed);
+                //        return yHedDelet;
+                //    }
+                //}
                 $('#mytb1 tbody').on('click', 'tr', function () {
                     var data = table2.row(this).data();
                     //alert(data[0]);
-                    var redid1 = [];
-                    var redid;
-                    if (data[0] == undefined) {
-                        redid = redid1[0]; 
-                    }
-                    else {
-                        redid1.push(data[0]);
-                        redid = redid1[0];
-                        var i = redid.length;
-                        i = i-13;
-                        redid = redid.substr(6, i);
-                    }
+                     
                     
                    
-                    getcolid(redid);
+                    //getcolid(redid);
                     //alert(redid);
                     //var xmlhttp = new XMLHttpRequest();
                     //xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&ched='+ colheadder + '&newva='+ newValueup + '&opr=update', false);
@@ -285,6 +331,9 @@
                     //alert(thiscol);
                     //alert(thisro);
                     if (thiscol == "Fun") {
+
+                    }
+                    else if (thiscol == undefined) {
 
                     }
                     else if (thiscol == "Pozicija_engl") {
@@ -707,9 +756,14 @@
                         if ($.fn.DataTable.isDataTable("#mytb1")) {
                             $('#mytb1').DataTable().clear().destroy();
                             $('#mytb1').DataTable({
-                                select: true                
-                            } );
-                        }
+                                //select: true
+                                "columnDefs": [ {
+                                    "targets": -1,
+                                    "data": null,
+                                    "defaultContent": "<button>Click!</button>"
+                                } ]
+                            });
+                            
 
                         //$('#mytb1').DataTable();
                         //$('#mytb1').DataTable().clear().destroy();
