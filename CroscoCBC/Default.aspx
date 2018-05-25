@@ -32,15 +32,19 @@
     
 
     <script src="Scripts/jquery-1.12.4.js"></script>
+    
     <script src="Scripts/jquery.dataTables.min.js"></script>
     <script src="Scripts/dataTables.bootstrap.min.js"></script>
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link href="Content/dataTables.bootstrap.min.css" rel="stylesheet" />
-    
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
     <link href="Content/datatables.css" rel="stylesheet" />
     <link href="Content/datatables.min.css" rel="stylesheet" />
-
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.5.1/css/buttons.dataTables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
     
 
@@ -55,9 +59,20 @@
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="Scripts/datatables.js"></script>
     <script src="Scripts/datatables.min.js"></script>
+    
+
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/select/1.2.5/js/dataTables.select.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.colVis.min.js"></script>
+
 <%--<script src="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table.min.js"></script>
     <link rel="stylesheet" href="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table-all.min.css" />
     <script>
@@ -88,13 +103,14 @@
     </script>--%>
 
     <div class="jumbotron">
+    <%--<div>--%>
         <div>
-            <input id="addRow" type="button" value="add" />
+            <input id="addRow" class="col-md-8 btn-success" type="button" value="add" />
             <input id="DeleteRow" type="button" value="Delete" onclick="deleteRow();" />
-            <input id="create-user" type="button" value="Edit" />
+            <%--<input id="create-user" type="button" value="Edit" />--%>
             <input id="insertbtm" type="button" value="Insert" onclick="insret();" />
             <input id="displaybtm" type="button" value="Display" onclick="display();" />
-            <input id="updatebtm" type="button" value="Update" onclick="updateRow();" />
+            <input id="ljecnicki" type="button" value="ljecnicki" onclick="pokazi();" />
                         
         <asp:Panel ID="Panel2" ClientIDMode="Static" runat="server">
             
@@ -105,18 +121,62 @@
         <script>
             $(document).ready(function () {
                 $('#mytb1').DataTable({
-                    //select: true     
+                    //   
+                    //"dom": '<lf<t>ip>',
+                    "dom": '<"toolbar">lBfrtip',
+                    
+                    //"dom": '<"top"i>rt<"bottom"flp><"clear">',
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                     
                     "columnDefs": [ {
                         "targets": -1,
                         "data": null,
                         "defaultContent": "<button class='btn btn-danger'>Delete!</button>"
-                    } ]
+                    }],
+                    "buttons": [
+                        {
+                            extend:    'copyHtml5',
+                            text:      '<i class="fa fa-files-o"></i>',
+                            titleAttr: 'Copy'
+                        },
+                        {
+                            extend:    'excelHtml5',
+                            text:      '<i class="fa fa-file-excel-o"></i>',
+                            titleAttr: 'Excel'
+                        },
+                        {
+                            extend:    'csvHtml5',
+                            text:      '<i class="fa fa-file-text-o"></i>',
+                            titleAttr: 'CSV'
+                        },
+                        {
+                            extend:    'pdfHtml5',
+                            text:      '<i class="fa fa-file-pdf-o"></i>',
+                            titleAttr: 'PDF'
+                        },
+                        {
+                            text: 'Add',
+                            action: function ( e, dt, node, config ) {
+                                alert( 'Button activated' );
+                            }
+                        },
+                        {
+                            text: '<input id="create-user"class="btn btn-success" type="button" value="Edit" />',
+                            action: function ( e, dt, node, config ) {
+                                alert( 'Button activated' );
+                            }
+                        },
+                        'colvis'                                                
+                    ]
+                    //"select": true  
+
                 } );
+                $("div.toolbar").html('<input id="create-user1"class="btn btn-success" type="button" value="Edit" />');
 
                 var table1 = $('#mytb1').DataTable();
                 var redid1 = [];
-
+                table1.buttons().container()
+                    .appendTo( '#mytb1_wrapper .col-sm-6:eq(0)' );
                 $('#mytb1 tbody').on('click', 'tr', function () {
                     var data = table1.row(this).data();
                     
@@ -522,16 +582,16 @@
     </script>
         <p>Date: <input type="text" id="datepicker"></p>--%>
         
-    <%--<script>
+    <script>
       $( function() {
         var dialog, form,
  
-          // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+         
           emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-          name = $( "#name" ),
+          Ime = $( "#Ime" ),
           email = $( "#email" ),
           password = $( "#password" ),
-          allFields = $( [] ).add( name ).add( email ).add( password ),
+          allFields = $( [] ).add( Ime ).add( email ).add( password ),
           tips = $( ".validateTips" );
  
         function updateTips( t ) {
@@ -568,17 +628,17 @@
           var valid = true;
           allFields.removeClass( "ui-state-error" );
  
-          valid = valid && checkLength( name, "username", 3, 16 );
+          valid = valid && checkLength( Ime, "username", 3, 16 );
           valid = valid && checkLength( email, "email", 6, 80 );
           valid = valid && checkLength( password, "password", 5, 16 );
  
-          valid = valid && checkRegexp( name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+          valid = valid && checkRegexp( Ime, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
           valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
           valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
  
           if ( valid ) {
             $( "#users tbody" ).append( "<tr>" +
-              "<td>" + name.val() + "</td>" +
+              "<td>" + Ime.val() + "</td>" +
               "<td>" + email.val() + "</td>" +
               "<td>" + password.val() + "</td>" +
             "</tr>" );
@@ -589,7 +649,7 @@
  
         dialog = $( "#dialog-form" ).dialog({
           autoOpen: false,
-          height: 400,
+          height: 600,
           width: 350,
           modal: true,
           buttons: {
@@ -599,8 +659,9 @@
             }
           },
           close: function() {
-            form[ 0 ].reset();
-            allFields.removeClass( "ui-state-error" );
+            //form[ 0 ].reset();
+              allFields.removeClass("ui-state-error");
+              dialog.dialog( "close" );
           }
         });
  
@@ -619,8 +680,16 @@
  
             <form>
                 <fieldset>
-                    <label for="name">Name</label>
-                    <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+                    <label for="KadrovskiBroj">Kadrovski Broj</label>
+                    <input type="text" name="Kadrovski Broj" id="KadrovskiBroj" value="" class="text ui-widget-content ui-corner-all">
+                    <label for="Ime">Ime</label>
+                    <input type="text" name="Ime" id="Ime" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+                    <label for="Prezime">Prezime</label>
+                    <input type="text" name="Prezime" id="Prezime" value="" class="text ui-widget-content ui-corner-all">
+                    <label for="Pozicja">Pozicja</label>
+                    <input type="text" name="Pozicja" id="Pozicja" value="" class="text ui-widget-content ui-corner-all">
+                    <label for="PozicjaEng">PozicjaEng</label>
+                    <input type="text" name="PozicjaEng" id="PozicjaEng" value="" class="text ui-widget-content ui-corner-all">
                     <label for="email">Email</label>
                     <input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
                     <label for="password">Password</label>
@@ -638,20 +707,21 @@
             <table id="users" class="ui-widget ui-widget-content">
                 <thead>
                     <tr class="ui-widget-header ">
-                        <th style="width: 92px">Name</th>
+                        <th style="width: 92px">Ime</th>
                         <th>Email</th>
                         <th>Password</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="width: 92px">John Doe</td>
-                        <td>john.doe@example.com</td>
-                        <td>johndoe1</td>
+                        <td style="width: 92px; height: 114px;">John Doe</td>
+                        <td style="height: 114px">john.doe@example.com</td>
+                        <td style="height: 114px">johndoe1</td  >
                     </tr>
                 </tbody>
             </table>
-        </div>--%>
+            <%--<button id="create-user">Create new user</button>--%>
+        </div>
         
         <script>
             function onSuccessCallBack() {
@@ -702,6 +772,14 @@
                 //window.location.reload();
             //} );
             }
+            function pokazi() {           
+                var x = document.getElementById("mytb1_wrapper");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
             //function updateRow() {
                 
             //    var trst = document.getElementsByClassName('selected').value;
@@ -748,7 +826,7 @@
                 //var tablica = $('#Panel2').value;
                 //tablica= xmlhttp.responseText;
                 //document.getElementById("mytb1").innerHTML = xmlhttp.responseText;
-                    
+
                 if (xmlhttp.readyState == 4) {
                     if (xmlhttp.status == 200) {
                         var resultText = xmlhttp.responseText;
@@ -757,24 +835,25 @@
                             $('#mytb1').DataTable().clear().destroy();
                             $('#mytb1').DataTable({
                                 //select: true
-                                "columnDefs": [ {
+                                "columnDefs": [{
                                     "targets": -1,
                                     "data": null,
                                     "defaultContent": "<button>Click!</button>"
-                                } ]
+                                }]
                             });
-                            
 
-                        //$('#mytb1').DataTable();
-                        //$('#mytb1').DataTable().clear().destroy();
 
-                        //$('#mytb1').DataTable().fnDestroy();
-                            
+                            //$('#mytb1').DataTable();
+                            //$('#mytb1').DataTable().clear().destroy();
+
+                            //$('#mytb1').DataTable().fnDestroy();
+
+                        }
                     }
-                }
-                //document.getElementById("dddd1").value = xmlhttp.responseText;
+                    //document.getElementById("dddd1").value = xmlhttp.responseText;
 
-            } 
+                }
+            }
         </script>
        
             <div>
