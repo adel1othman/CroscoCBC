@@ -1,11 +1,11 @@
 ﻿<%@ Page Title="Home Page" Language="VB" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.vb" Inherits="CroscoCBC._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <div>
-            <asp:TextBox ID="t11" runat="server"  />
-            <asp:TextBox ID="t22" runat="server"  />
-            <asp:Button ID="btnSave" Text="Save" runat="server" />
-        </div>
+   <%-- <div>
+        <asp:TextBox ID="t11" runat="server"  />
+        <asp:TextBox ID="t22" runat="server"  />
+        <asp:Button ID="btnSave" Text="Save" runat="server" />
+    </div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script src="http://cdn.jsdelivr.net/json2/0.1/json2.js"></script>
     <script>
@@ -28,7 +28,7 @@
                 return false;
             });
         });
-    </script>
+    </script>--%>
     
 
     <script src="Scripts/jquery-1.12.4.js"></script>
@@ -102,20 +102,25 @@
         );
     </script>--%>
 
-    <div class="jumbotron">
-    <%--<div>--%>
+    <%--<div class="jumbotron">--%>
+    <div>
+        <br />
         <div>
-            <input id="addRow" class="col-md-8 btn-success" type="button" value="add" />
-            <input id="DeleteRow" type="button" value="Delete" onclick="deleteRow();" />
-            <%--<input id="create-user" type="button" value="Edit" />--%>
-            <input id="insertbtm" type="button" value="Insert" onclick="insret();" />
-            <input id="displaybtm" type="button" value="Display" onclick="display();" />
-            <input id="ljecnicki" type="button" value="ljecnicki" onclick="pokazi();" />
-                        
+            <input id="addRow" class="btn btn-group" type="button" value="add" />
+            <%--<input id="DeleteRow" type="button" value="Delete" onclick="deleteRow();" />--%>
+            <input id="btnexport3" class="btn btn-success" type="button" value="Excel" />
+            <input id="create-user" class="btn btn-success" type="button" value="Novi zaposlenik" />
+            <input id="ljecnicki" class="btn btn-info" type="button" value="ljecnicki i kontakt" onclick="pokazi();" />
+            
+            <%--<input id="insertbtm" type="button" value="Insert" onclick="insret();" />--%>
+            <%--<input id="displaybtm" type="button" value="Display" onclick="display();" />--%>
+            
+        </div>
+        <br />
         <asp:Panel ID="Panel2" ClientIDMode="Static" runat="server">
             
         </asp:Panel>
-        </div>
+        
          <div id="dddd1">
         </div>
         <script>
@@ -161,7 +166,7 @@
                             }
                         },
                         {
-                            text: '<input id="create-user"class="btn btn-success" type="button" value="Edit" />',
+                            text: 'nesto',
                             action: function ( e, dt, node, config ) {
                                 alert( 'Button activated' );
                             }
@@ -171,8 +176,23 @@
                     //"select": true  
 
                 } );
-                $("div.toolbar").html('<input id="create-user1"class="btn btn-success" type="button" value="Edit" />');
+                //$("div.toolbar").html('<input id="create-user1" class="btn btn-success" type="button" value="Export trenutni izgled" />');
+                $("div.toolbar").html('<button id="btnExport" class="btn btn-success" onclick="fnExcelReport();">Export trenutni izgled</button>');
+                $("#btnExport3").click(function(e) {
 
+                    var a = document.createElement('a');
+                    //getting data from our div that contains the HTML table
+                    var data_type = 'data:application/vnd.ms-excel';
+                    var table_div = document.getElementById('mytb1');
+                    var table_html = table_div.outerHTML.replace(/ /g, '%20');
+                    a.href = data_type + ', ' + table_html;
+                    //setting the file name
+                    a.download = 'download.xlsx';
+                    //triggering the function
+                    a.click();
+                    //just in case, prevent default behaviour
+                    e.preventDefault();
+                });
                 var table1 = $('#mytb1').DataTable();
                 var redid1 = [];
                 table1.buttons().container()
@@ -508,7 +528,8 @@
         } );
     </script>--%>
         <iframe id="txtArea1" style="display:none"></iframe>
-        <button id="btnExport" onclick="fnExcelReport();"> EXPORT</button>
+        
+        <%--<button id="btnExport" onclick="fnExcelReport();"> EXPORT</button>--%>
     <script>
         function fnExcelReport(e) {
             $(".truncatedData").hide();
@@ -556,7 +577,7 @@
                 //alert(table_html)
                 a.href = data_type + ', ' + table_html;
                 //setting the file name
-                a.download = 'exported_table.xls';
+                a.download = 'exported_view.xls';
                 //triggering the function
                 a.click();
 
@@ -588,11 +609,15 @@
  
          
           emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
-          Ime = $( "#Ime" ),
-          email = $( "#email" ),
-          password = $( "#password" ),
-          allFields = $( [] ).add( Ime ).add( email ).add( password ),
-          tips = $( ".validateTips" );
+          Ime = $("#Ime"),
+          Prezime = $("#Prezime"),
+          kadrov = $( "#KadrovskiBroj" ),
+          //email = $( "#email" ),
+          //password = $( "#password" ),
+          //allFields = $( [] ).add( Ime ).add( Prezime ).add( email ).add( password ),
+          allFields = $( [] ).add( Ime ).add( Prezime ).add( kadrov ),
+          tips = $(".validateTips");
+
  
         function updateTips( t ) {
           tips
@@ -606,8 +631,8 @@
         function checkLength( o, n, min, max ) {
           if ( o.val().length > max || o.val().length < min ) {
             o.addClass( "ui-state-error" );
-            updateTips( "Length of " + n + " must be between " +
-              min + " and " + max + "." );
+            updateTips( "Dužina " + n + " mora biti između " +
+              min + " i " + max + "." );
             return false;
           } else {
             return true;
@@ -628,20 +653,41 @@
           var valid = true;
           allFields.removeClass( "ui-state-error" );
  
-          valid = valid && checkLength( Ime, "username", 3, 16 );
-          valid = valid && checkLength( email, "email", 6, 80 );
-          valid = valid && checkLength( password, "password", 5, 16 );
+          valid = valid && checkLength(Ime, "Ime", 3, 16);
+          valid = valid && checkLength(Prezime, "Prezime", 3, 16);
+          valid = valid && checkLength( kadrov, "Kadrvoski broj", 6, 16 );
+          //valid = valid && checkLength( email, "email", 6, 80 );
+          //valid = valid && checkLength( password, "password", 5, 16 );
  
-          valid = valid && checkRegexp( Ime, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
-          valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
-          valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+          valid = valid && checkRegexp(Ime, /^[a-z]([0-9a-z_\s])+$/i, "Ime may consist of a-z, 0-9, underscores, spaces and must begin with a letter.");
+          valid = valid && checkRegexp(Prezime, /^[a-z]([0-9a-z_\s])+$/i, "Prezime may consist of a-z, 0-9, underscores, spaces and must begin with a letter."); 
+          valid = valid && checkRegexp( kadrov, /^([0-9])+$/i, "Kadrov may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );  
+          //valid = valid && checkRegexp( email, emailRegex, "eg. ui@jquery.com" );
+          //valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
  
           if ( valid ) {
-            $( "#users tbody" ).append( "<tr>" +
-              "<td>" + Ime.val() + "</td>" +
-              "<td>" + email.val() + "</td>" +
-              "<td>" + password.val() + "</td>" +
-            "</tr>" );
+              $("#mytb1 tbody").append("<tr>" +
+                "<td><span>" + "" + "</span></td>" +
+                "<td><span>" + kadrov.val() + "</span></td>" +
+                "<td><span>" + Ime.val() + "</span></td>" +
+                "<td><span>" + Prezime.val() + "</span></td>" +
+                "<td><span>" + "Pozicija" + "</span></td>" +
+                "<td><span>" + "Pozicija eng" + "</span></td>" +
+                "<td><span>" + "<button class='btn btn-danger'>Delete!</button>" + "</span></td>" +
+                //"<td>" + email.val() + "</td>" +
+                //"<td>" + password.val() + "</td>" +
+                "</tr>");
+                var name = document.getElementById("Ime").value;
+                var surname = document.getElementById("Prezime").value;
+                var Kadid = document.getElementById("KadrovskiBroj").value;
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open('Get', 'InsertPage.aspx?nm=' + name + '&sr=' + surname + '&kdr=' + Kadid + '&opr=insert', true);
+                xmlhttp.send(null);
+                document.getElementById("Ime").value = "";
+                document.getElementById("Prezime").value = "";
+                document.getElementById("KadrovskiBroj").value = "";
+              alert("ažurirano");
+
             dialog.dialog( "close" );
           }
           return valid;
@@ -683,9 +729,9 @@
                     <label for="KadrovskiBroj">Kadrovski Broj</label>
                     <input type="text" name="Kadrovski Broj" id="KadrovskiBroj" value="" class="text ui-widget-content ui-corner-all">
                     <label for="Ime">Ime</label>
-                    <input type="text" name="Ime" id="Ime" value="Jane Smith" class="text ui-widget-content ui-corner-all">
+                    <input type="text" name="Ime" id="Ime" value="Test" class="text ui-widget-content ui-corner-all">
                     <label for="Prezime">Prezime</label>
-                    <input type="text" name="Prezime" id="Prezime" value="" class="text ui-widget-content ui-corner-all">
+                    <input type="text" name="Prezime" id="Prezime" value="Testić" class="text ui-widget-content ui-corner-all">
                     <label for="Pozicja">Pozicja</label>
                     <input type="text" name="Pozicja" id="Pozicja" value="" class="text ui-widget-content ui-corner-all">
                     <label for="PozicjaEng">PozicjaEng</label>
@@ -708,15 +754,17 @@
                 <thead>
                     <tr class="ui-widget-header ">
                         <th style="width: 92px">Ime</th>
+                        <th style="width: 92px">Prezime</th>
                         <th>Email</th>
                         <th>Password</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="width: 92px; height: 114px;">John Doe</td>
-                        <td style="height: 114px">john.doe@example.com</td>
-                        <td style="height: 114px">johndoe1</td  >
+                        <td style="width: 92px; height: 114px;">Ime</td>
+                        <td style="width: 92px; height: 114px;">Prezime</td>
+                        <td style="height: 114px">ime.prezime@crosco.hr</td>
+                        <td style="height: 114px">Crosco1234</td  >
                     </tr>
                 </tbody>
             </table>
@@ -861,7 +909,7 @@
                 <input type="text" id="t2" />
                                
             </div>
-        <input id="pota" type="button" value="Potablice" onclick="potablicu();" />
+        <input id="pote" type="button" value="Potablice" onclick="potablicu();" />
         
         <%--<script>
         function potablicu() {

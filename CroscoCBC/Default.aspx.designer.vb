@@ -14,33 +14,6 @@ Option Explicit On
 Partial Public Class _Default
     
     '''<summary>
-    '''t11 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents t11 As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''t22 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents t22 As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''btnSave control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btnSave As Global.System.Web.UI.WebControls.Button
-    
-    '''<summary>
     '''Panel2 control.
     '''</summary>
     '''<remarks>

@@ -81,8 +81,8 @@
         
         <div class="container body-content">
             <div>
-            <%--    <img src="Slike/crosco%20banneri_crosco%20copy.png" />
-            </div>--%>
+                <img class="img-responsive" src="slike/crosco%20banneri_crosco%20copy.png" />
+            </div>
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <hr />

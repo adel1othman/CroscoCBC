@@ -11,7 +11,7 @@ Partial Public Class InsertPage
 
 
     Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
-    Dim Ime, Prezime, opr As String
+    Dim Ime, Prezime, kadr, opr As String
 
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -26,10 +26,11 @@ Partial Public Class InsertPage
             'If Not Me.IsPostBack Then
             'Ime = Request.QueryString("nm").ToString()
             Prezime = Request.QueryString("sr").ToString()
+            kadr = Request.QueryString("kdr").ToString()
             'Ime = Request.QueryString("nm").ToString()
             Dim comstrin As String
             'comstrin = "Insert into CROSCO_CBC values ('" & Ime.ToString() & "','" & Prezime.ToString() & "')"
-            comstrin = "Insert into CROSCO_CBC (IME,Prezime) VALUES ('" & Ime.ToString() & "','" & Prezime.ToString() & "')"
+            comstrin = "Insert into CROSCO_CBC (IME,Prezime,[Kadrovski broj]) VALUES ('" & Ime.ToString() & "','" & Prezime.ToString() & "','" & Convert.ToInt32(kadr.ToString()) & "')"
             MsgBox(comstrin)
             Dim con As New SqlConnection(constr)
             Dim cmd As New SqlCommand

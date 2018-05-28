@@ -13,7 +13,7 @@ Public Class _Default
             'Building an HTML string.
             Dim html As New StringBuilder()
 
-            'Table start.
+            'Table start. 
             'html.Append("<table id='mytb1' border = '1' cellspacing='1' class='tablesorter'>")
             html.Append("<table id='mytb1' Class='table table-striped table-bordered' style='width:100%'>")
             'Building the Header row.
