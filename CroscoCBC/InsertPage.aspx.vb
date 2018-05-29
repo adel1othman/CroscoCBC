@@ -151,14 +151,177 @@ Partial Public Class InsertPage
             cmd.ExecuteNonQuery()
 
             con.Close()
+        ElseIf opr = "showCer" Then
+            'Dim comstring As String
+            RowId = Request.QueryString("id").ToString()
+            MsgBox(RowId)
+            'OsbniCertifikati(RowId)
+            Dim kadrov As Integer = Convert.ToInt32(RowId)
+            MsgBox("Ideššššš!")
+            Dim cbcdt As DataTable = Me.GetCertifikati(kadrov)
 
+            'Building an HTML string.
+            Response.Write("<table id='Osbcbc' class='table table-striped table-bordered dataTable no-footer' style='width:100%' role='grid' aria-describedby='mytb1_info'>")
+
+            'Building the Header row.
+            'html.Append("<thead>")
+            Response.Write("<thead>")
+            'html.Append("<tr>")
+            Response.Write("<tr role='row'>")
+            Dim i As Integer = 0
+            For Each column As DataColumn In cbcdt.Columns
+
+                Dim stri As String
+                stri = "<th style='cursor: pointer'>"
+                'stri = "<th onclick='sortTable(" & i & ")'>"
+
+
+
+                'stri = "<th onclick="
+                'stri = stri & "w3.sortHTML("
+                'stri = stri & "'" & "#tb1" & "','.item'," & "'td:nth-child(" & i & ")')' " & "style='cursor:pointer'>"
+                'html.Append(stri)
+                Response.Write(stri)
+                i = i + 1
+                'html.Append(column.ColumnName)
+                Dim textToPass As String = column.ColumnName.ToString()
+                Response.Write(textToPass)
+                MsgBox(textToPass)
+                'html.Append("</th>")
+                Response.Write("</th>")
+            Next
+            'Response.Write("<th style='cursor:pointer'>")
+            'Response.Write("Fun")
+            'Response.Write("</th>")
+            'html.Append("</tr>")
+            Response.Write("</tr>")
+            'html.Append("</thead>")
+            Response.Write("</thead>")
+            'html.Append("<tbody id='myTable'>")
+            'Building the Data rows.
+            For Each row As DataRow In cbcdt.Rows
+                'html.Append("<tr class='item'>")
+                Response.Write("<tr class='item'>")
+                For Each column As DataColumn In cbcdt.Columns
+                    'html.Append("<td Class='txtBox'>")
+                    Response.Write("<td Class='txtBox'>")
+                    'html.Append("<span>")
+                    Response.Write("<span>")
+                    'html.Append(row(column.ColumnName))
+
+                    Dim test As String = row(column.ColumnName).ToString()
+                    Response.Write(test)
+                    'MsgBox(test)
+                    Response.Write("</span>")
+                    'html.Append("</td>")
+                    Response.Write("</td>")
+                Next
+                'html.Append("</tr>")
+                'Response.Write("<td Class='btn'>")
+                'Response.Write("<input type='button' value='Delete' onclick='deleteRow();' />")
+                'Response.Write("</td>")
+                Response.Write("</tr>")
+            Next
+            'html.Append("</tbody>")
+            'Table end.
+            Response.Write("</table>")
 
         End If
     End Sub
+    'Private Sub OsbniCertifikati(osid)
+    '    Dim kadrov As Integer = Convert.ToInt32(osid)
+    '    MsgBox("Ideššššš!")
+    '    Dim cbcdt As DataTable = Me.GetCertifikati(kadrov)
+
+    '    'Building an HTML string.
+    '    Response.Write("<table id='Osbcbc' class='table table-striped table-bordered dataTable no-footer' style='width:100%' role='grid' aria-describedby='mytb1_info'>")
+
+    '    'Building the Header row.
+    '    'html.Append("<thead>")
+    '    Response.Write("<thead>")
+    '    'html.Append("<tr>")
+    '    Response.Write("<tr role='row'>")
+    '    Dim i As Integer = 0
+    '    For Each column As DataColumn In cbcdt.Columns
+
+    '        Dim stri As String
+    '        stri = "<th style='cursor: pointer'>"
+    '        'stri = "<th onclick='sortTable(" & i & ")'>"
+
+
+
+    '        'stri = "<th onclick="
+    '        'stri = stri & "w3.sortHTML("
+    '        'stri = stri & "'" & "#tb1" & "','.item'," & "'td:nth-child(" & i & ")')' " & "style='cursor:pointer'>"
+    '        'html.Append(stri)
+    '        Response.Write(stri)
+    '        i = i + 1
+    '        'html.Append(column.ColumnName)
+    '        Dim textToPass As String = column.ColumnName.ToString()
+    '        Response.Write(textToPass)
+    '        MsgBox(textToPass)
+    '        'html.Append("</th>")
+    '        Response.Write("</th>")
+    '    Next
+    '    'Response.Write("<th style='cursor:pointer'>")
+    '    'Response.Write("Fun")
+    '    'Response.Write("</th>")
+    '    'html.Append("</tr>")
+    '    Response.Write("</tr>")
+    '    'html.Append("</thead>")
+    '    Response.Write("</thead>")
+    '    'html.Append("<tbody id='myTable'>")
+    '    'Building the Data rows.
+    '    For Each row As DataRow In cbcdt.Rows
+    '        'html.Append("<tr class='item'>")
+    '        Response.Write("<tr class='item'>")
+    '        For Each column As DataColumn In cbcdt.Columns
+    '            'html.Append("<td Class='txtBox'>")
+    '            Response.Write("<td Class='txtBox'>")
+    '            'html.Append("<span>")
+    '            Response.Write("<span>")
+    '            'html.Append(row(column.ColumnName))
+
+    '            Dim test As String = row(column.ColumnName).ToString()
+    '            Response.Write(test)
+    '            'MsgBox(test)
+    '            Response.Write("</span>")
+    '            'html.Append("</td>")
+    '            Response.Write("</td>")
+    '        Next
+    '        'html.Append("</tr>")
+    '        'Response.Write("<td Class='btn'>")
+    '        'Response.Write("<input type='button' value='Delete' onclick='deleteRow();' />")
+    '        'Response.Write("</td>")
+    '        Response.Write("</tr>")
+    '    Next
+    '    'html.Append("</tbody>")
+    '    'Table end.
+    '    Response.Write("</table>")
+
+    'End Sub
     Private Function GetData() As DataTable
         Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
         Using con As New SqlConnection(constr)
             Using cmd As New SqlCommand("Select [ID], [Kadrovski broj] AS Kadrovski_broj, [Ime], [Prezime], [Pozicija], [Pozicija engl] AS Pozicija_engl FROM [CROSCO_CBC]")
+                Using sda As New SqlDataAdapter()
+                    cmd.Connection = con
+                    sda.SelectCommand = cmd
+                    Using dt As New DataTable()
+                        sda.Fill(dt)
+                        Return dt
+                    End Using
+                End Using
+            End Using
+        End Using
+    End Function
+    Private Function GetCertifikati(kadid) As DataTable
+        Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
+        Dim kdr As Integer = kadid
+        Using con As New SqlConnection(constr)
+            Dim scom As String = "Select Ime, [PUR točke], MCexp, RSNexp, RSNsexp FROM CROSCO_CBC where [Kadrovski broj] = " & kdr
+
+            Using cmd As New SqlCommand(scom)
                 Using sda As New SqlDataAdapter()
                     cmd.Connection = con
                     sda.SelectCommand = cmd

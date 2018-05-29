@@ -72,6 +72,72 @@ Public Class _Default
             })
 
             'GetTable()
+
+
+            'get cbc table
+
+            Dim cbcdt As DataTable = Me.GetDataCertificate()
+
+            'Building an HTML string.
+            Dim cbchtml As New StringBuilder()
+
+            'Table start. 
+            'html.Append("<table id='mytb1' border = '1' cellspacing='1' class='tablesorter'>")
+            cbchtml.Append("<table id='mytbcbc' Class='table table-striped table-bordered'>")
+            'Building the Header row.
+            cbchtml.Append("<thead>")
+            cbchtml.Append("<tr>")
+            Dim ci As Integer = 0
+            For Each column As DataColumn In cbcdt.Columns
+
+                Dim cbcstri As String
+                cbcstri = "<th style='cursor:pointer'>"
+                'stri = "<th onclick='sortTable(" & i & ")'>"
+
+
+
+                'stri = "<th onclick="
+                'stri = stri & "w3.sortHTML("
+                'stri = stri & "'" & "#tb1" & "','.item'," & "'td:nth-child(" & i & ")')' " & "style='cursor:pointer'>"
+                cbchtml.Append(cbcstri)
+                ci = ci + 1
+                cbchtml.Append(column.ColumnName)
+                cbchtml.Append("</th>")
+            Next
+            cbchtml.Append("<th style='cursor:pointer'>")
+            cbchtml.Append("Fun")
+            cbchtml.Append("</th>")
+            cbchtml.Append("</tr>")
+            cbchtml.Append("</thead>")
+            'html.Append("<tbody id='myTable'>")
+            'Building the Data rows.
+            For Each row As DataRow In cbcdt.Rows
+                cbchtml.Append("<tr class='item'>")
+                For Each column As DataColumn In cbcdt.Columns
+                    cbchtml.Append("<td Class='txtBox'>")
+                    cbchtml.Append("<span>")
+                    cbchtml.Append(row(column.ColumnName))
+                    cbchtml.Append("</span>")
+                    cbchtml.Append("</td>")
+
+                Next
+                cbchtml.Append("<td Class='btn'>")
+                cbchtml.Append("<Delete>")
+                'html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
+
+                cbchtml.Append("</td>")
+                cbchtml.Append("</tr>")
+
+            Next
+            'html.Append("</tbody>")
+            'Table end.
+            cbchtml.Append("</table>")
+
+
+            'Append the HTML string to Placeholder.
+            Panel3.Controls.Add(New Literal() With {
+              .Text = cbchtml.ToString()
+            })
         End If
 
     End Sub
@@ -80,6 +146,21 @@ Public Class _Default
         Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
         Using con As New SqlConnection(constr)
             Using cmd As New SqlCommand("Select [ID], [Kadrovski broj] AS Kadrovski_broj, [Ime], [Prezime], [Pozicija], [Pozicija engl] AS Pozicija_engl FROM [CROSCO_CBC]")
+                Using sda As New SqlDataAdapter()
+                    cmd.Connection = con
+                    sda.SelectCommand = cmd
+                    Using dt As New DataTable()
+                        sda.Fill(dt)
+                        Return dt
+                    End Using
+                End Using
+            End Using
+        End Using
+    End Function
+    Private Function GetDataCertificate() As DataTable
+        Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
+        Using con As New SqlConnection(constr)
+            Using cmd As New SqlCommand("Select [Kadrovski broj] AS Kadrovski_broj, [Prezime i Ime] AS PrezimeIme, [Pozicija] FROM [CROSCO_CBC]")
                 Using sda As New SqlDataAdapter()
                     cmd.Connection = con
                     sda.SelectCommand = cmd
@@ -105,56 +186,56 @@ Public Class _Default
             End Using
         End Using
     End Function
-    Private Function GetTable() As DataTable
-        Dim dt As DataTable = Me.GetData()
+    'Private Function GetTable() As DataTable
+    '    Dim dt As DataTable = Me.GetData()
 
-        'Building an HTML string.
-        Dim html As New StringBuilder()
+    '    'Building an HTML string.
+    '    Dim html As New StringBuilder()
 
-        'Table start.
-        'html.Append("<table id='mytb1' border = '1' cellspacing='1' class='tablesorter'>")
-        html.Append("<table id='mytb1' Class='table table-striped table-bordered' style='width:100%'>")
-        'Building the Header row.
-        html.Append("<thead>")
-        html.Append("<tr>")
-        Dim i As Integer = 0
-        For Each column As DataColumn In dt.Columns
+    '    'Table start.
+    '    'html.Append("<table id='mytb1' border = '1' cellspacing='1' class='tablesorter'>")
+    '    html.Append("<table id='mytb1' Class='table table-striped table-bordered' style='width:100%'>")
+    '    'Building the Header row.
+    '    html.Append("<thead>")
+    '    html.Append("<tr>")
+    '    Dim i As Integer = 0
+    '    For Each column As DataColumn In dt.Columns
 
-            Dim stri As String
-            stri = "<th style='cursor:pointer'>"
-            'stri = "<th onclick='sortTable(" & i & ")'>"
+    '        Dim stri As String
+    '        stri = "<th style='cursor:pointer'>"
+    '        'stri = "<th onclick='sortTable(" & i & ")'>"
 
 
 
-            'stri = "<th onclick="
-            'stri = stri & "w3.sortHTML("
-            'stri = stri & "'" & "#tb1" & "','.item'," & "'td:nth-child(" & i & ")')' " & "style='cursor:pointer'>"
-            html.Append(stri)
-            i = i + 1
-            html.Append(column.ColumnName)
-            html.Append("</th>")
-        Next
-        html.Append("</tr>")
-        html.Append("</thead>")
-        'html.Append("<tbody id='myTable'>")
-        'Building the Data rows.
-        For Each row As DataRow In dt.Rows
-            html.Append("<tr class='item'>")
-            For Each column As DataColumn In dt.Columns
-                html.Append("<td Class='txtBox'>")
-                html.Append("<span>")
-                html.Append(row(column.ColumnName))
-                html.Append("</span>")
-                html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
-                html.Append("</td>")
-            Next
-            html.Append("</tr>")
+    '        'stri = "<th onclick="
+    '        'stri = stri & "w3.sortHTML("
+    '        'stri = stri & "'" & "#tb1" & "','.item'," & "'td:nth-child(" & i & ")')' " & "style='cursor:pointer'>"
+    '        html.Append(stri)
+    '        i = i + 1
+    '        html.Append(column.ColumnName)
+    '        html.Append("</th>")
+    '    Next
+    '    html.Append("</tr>")
+    '    html.Append("</thead>")
+    '    'html.Append("<tbody id='myTable'>")
+    '    'Building the Data rows.
+    '    For Each row As DataRow In dt.Rows
+    '        html.Append("<tr class='item'>")
+    '        For Each column As DataColumn In dt.Columns
+    '            html.Append("<td Class='txtBox'>")
+    '            html.Append("<span>")
+    '            html.Append(row(column.ColumnName))
+    '            html.Append("</span>")
+    '            html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
+    '            html.Append("</td>")
+    '        Next
+    '        html.Append("</tr>")
 
-        Next
-        'html.Append("</tbody>")
-        'Table end.
-        html.Append("</table>")
-    End Function
+    '    Next
+    '    'html.Append("</tbody>")
+    '    'Table end.
+    '    html.Append("</table>")
+    'End Function
     'Protected Sub ExportToExcel(sender As Object, e As EventArgs)
     '    Response.Clear()
     '    Response.Buffer = True

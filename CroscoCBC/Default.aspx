@@ -38,7 +38,7 @@
     <link href="Content/bootstrap.min.css" rel="stylesheet" />
     <link href="Content/dataTables.bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="/resources/demos/style.css">
+    <%--<link rel="stylesheet" href="/resources/demos/style.css">--%>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
     <link href="Content/datatables.css" rel="stylesheet" />
     <link href="Content/datatables.min.css" rel="stylesheet" />
@@ -108,7 +108,7 @@
         <div>
             <input id="addRow" class="btn btn-group" type="button" value="add" />
             <%--<input id="DeleteRow" type="button" value="Delete" onclick="deleteRow();" />--%>
-            <input id="btnexport3" class="btn btn-success" type="button" value="Excel" />
+            <input id="btnExport" class="btn btn-success" type="button" value="Excel" />
             <input id="create-user" class="btn btn-success" type="button" value="Novi zaposlenik" />
             <input id="ljecnicki" class="btn btn-info" type="button" value="ljecnicki i kontakt" onclick="pokazi();" />
             
@@ -175,19 +175,113 @@
                     ]
                     //"select": true  
 
+                });
+                $('#mytbcbc').DataTable({
+                    //   
+                    //"dom": '<lf<t>ip>',
+                    "dom": '<"toolbar">lBfrtip',
+                    
+                    //"dom": '<"top"i>rt<"bottom"flp><"clear">',
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    
+                    "columnDefs": [ {
+                        "targets": -1,
+                        "data": null,
+                        "defaultContent": "<button class='btn btn-info'>Certifikati!</button>"
+                    }],
+                    "buttons": [
+                        {
+                            extend:    'copyHtml5',
+                            text:      '<i class="fa fa-files-o"></i>',
+                            titleAttr: 'Copy'
+                        },
+                        {
+                            extend:    'excelHtml5',
+                            text:      '<i class="fa fa-file-excel-o"></i>',
+                            titleAttr: 'Excel'
+                        },
+                        {
+                            extend:    'csvHtml5',
+                            text:      '<i class="fa fa-file-text-o"></i>',
+                            titleAttr: 'CSV'
+                        },
+                        {
+                            extend:    'pdfHtml5',
+                            text:      '<i class="fa fa-file-pdf-o"></i>',
+                            titleAttr: 'PDF'
+                        },
+                        {
+                            text: 'Add',
+                            action: function ( e, dt, node, config ) {
+                                alert( 'Button activated' );
+                            }
+                        },
+                        {
+                            text: 'nesto',
+                            action: function ( e, dt, node, config ) {
+                                alert( 'Button activated' );
+                            }
+                        },
+                        'colvis'                                                
+                    ]
+                    //"select": true  
+
+                });
+                var CBCtable = $('#mytbcbc').DataTable();
+                $('#mytbcbc tbody').on( 'click', 'button', function () {
+                    var data = CBCtable.row( $(this).parents('tr') ).data();
+                    alert(data[0]);
+                    var redid = data[0];
+                    var i = redid.length;
+                    i = i-13;
+                    redid = redid.substr(6, i);                   
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&opr=showCer', false);
+                    xmlhttp.send(null);
+                    redid = "";
+                    document.getelementbyid("panel1").value = xmlhttp.responsetext;
+                    //if (xmlhttp.readyState == 4) {
+                    //    if (xmlhttp.status == 200) {
+                    //        var resultText = xmlhttp.responseText;
+                    //        document.getelementbyid("panel1").value = xmlhttp.responsetext;
+                    //        if ($.fn.datatable.isdatatable("#panel1")) {
+                    //            $('#panel1').datatable().clear().destroy();
+                    //            $('#panel1').datatable({
+                    //                //select: true
+                    //                //"columndefs": [{
+                    //                //    "targets": -1,
+                    //                //    "data": null,
+                    //                //    "defaultcontent": "<button>click!</button>"
+                    //                //}]
+                    //            });
+
+
+                    //            //$('#mytb1').datatable();
+                    //            //$('#mytb1').datatable().clear().destroy();
+
+                    //            //$('#mytb1').datatable().fndestroy();
+
+                    //        }
+                    //    }
+                        
+
+                    //}
+                    
+
+                    //display();
                 } );
                 //$("div.toolbar").html('<input id="create-user1" class="btn btn-success" type="button" value="Export trenutni izgled" />');
-                $("div.toolbar").html('<button id="btnExport" class="btn btn-success" onclick="fnExcelReport();">Export trenutni izgled</button>');
+                //$("div.toolbar").html('<button id="btnExport" class="btn btn-success" onclick="fnExcelReport();">Export trenutni izgled</button>');
                 $("#btnExport3").click(function(e) {
 
                     var a = document.createElement('a');
                     //getting data from our div that contains the HTML table
                     var data_type = 'data:application/vnd.ms-excel';
-                    var table_div = document.getElementById('mytb1');
+                    var table_div = document.getElementById('Panel2');
                     var table_html = table_div.outerHTML.replace(/ /g, '%20');
                     a.href = data_type + ', ' + table_html;
                     //setting the file name
-                    a.download = 'download.xlsx';
+                    a.download = 'download.xls';
                     //triggering the function
                     a.click();
                     //just in case, prevent default behaviour
@@ -904,13 +998,34 @@
             }
         </script>
        
-            <div>
-                <input type="text" id="t1" />
-                <input type="text" id="t2" />
-                               
-            </div>
-        <input id="pote" type="button" value="Potablice" onclick="potablicu();" />
         
+        <%--<input id="pote" type="button" value="Potablice" onclick="potablicu();" />--%>
+        <asp:Panel ID="Panel3" ClientIDMode="Static" runat="server">
+            
+        </asp:Panel>
+        <%--<asp:Panel ID="Panel1" ClientIDMode="Static" runat="server">
+            
+        </asp:Panel>--%>
+
+        <div ID="Panel1">
+            
+            <table id="Osbcbc">
+                <thead>
+                    <tr>
+                        <th>Ime</th>
+                        <th>PurTočke</th>
+                        <th>MCexp</th>
+                        <th>RSNexp</th>
+                        <th>RSNsexp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        
+                    </tr>
+                </tbody>
+            </table>                   
+        </div>
         <%--<script>
         function potablicu() {
             $.ajax({
