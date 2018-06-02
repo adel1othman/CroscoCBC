@@ -138,6 +138,72 @@ Public Class _Default
             Panel3.Controls.Add(New Literal() With {
               .Text = cbchtml.ToString()
             })
+
+
+            'get all table
+
+            'Dim cbcAlldt As DataTable = Me.GetAllCertificate()
+
+            ''Building an HTML string.
+            'Dim cbcAllhtml As New StringBuilder()
+
+            ''Table start. 
+            ''html.Append("<table id='mytb1' border = '1' cellspacing='1' class='tablesorter'>")
+            'cbcAllhtml.Append("<table id='Osbcbc' Class='table table-striped table-bordered' style='display:none'>")
+            ''Building the Header row.
+            'cbcAllhtml.Append("<thead>")
+            'cbcAllhtml.Append("<tr>")
+            'Dim cai As Integer = 0
+            'For Each column As DataColumn In cbcAlldt.Columns
+
+            '    Dim cbcallstri As String
+            '    cbcallstri = "<th style='cursor:pointer'>"
+            '    'stri = "<th onclick='sortTable(" & i & ")'>"
+
+
+
+            '    'stri = "<th onclick="
+            '    'stri = stri & "w3.sortHTML("
+            '    'stri = stri & "'" & "#tb1" & "','.item'," & "'td:nth-child(" & i & ")')' " & "style='cursor:pointer'>"
+            '    cbcAllhtml.Append(cbcallstri)
+            '    cai = cai + 1
+            '    cbcAllhtml.Append(column.ColumnName)
+            '    cbcAllhtml.Append("</th>")
+            'Next
+            'cbcAllhtml.Append("<th style='cursor:pointer'>")
+            'cbcAllhtml.Append("Fun")
+            'cbcAllhtml.Append("</th>")
+            'cbcAllhtml.Append("</tr>")
+            'cbcAllhtml.Append("</thead>")
+            ''html.Append("<tbody id='myTable'>")
+            ''Building the Data rows.
+            'For Each row As DataRow In cbcAlldt.Rows
+            '    cbcAllhtml.Append("<tr class='item'>")
+            '    For Each column As DataColumn In cbcAlldt.Columns
+            '        cbcAllhtml.Append("<td Class='txtBox'>")
+            '        cbcAllhtml.Append("<span>")
+            '        cbcAllhtml.Append(row(column.ColumnName))
+            '        cbcAllhtml.Append("</span>")
+            '        cbcAllhtml.Append("</td>")
+
+            '    Next
+            '    cbcAllhtml.Append("<td Class='btn'>")
+            '    cbcAllhtml.Append("<Delete>")
+            '    'html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
+
+            '    cbcAllhtml.Append("</td>")
+            '    cbcAllhtml.Append("</tr>")
+
+            'Next
+            ''html.Append("</tbody>")
+            ''Table end.
+            'cbcAllhtml.Append("</table>")
+
+
+            ''Append the HTML string to Placeholder.
+            'Panel1.Controls.Add(New Literal() With {
+            '  .Text = cbcAllhtml.ToString()
+            '})
         End If
 
     End Sub
@@ -161,6 +227,21 @@ Public Class _Default
         Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
         Using con As New SqlConnection(constr)
             Using cmd As New SqlCommand("Select [Kadrovski broj] AS Kadrovski_broj, [Prezime i Ime] AS PrezimeIme, [Pozicija] FROM [CROSCO_CBC]")
+                Using sda As New SqlDataAdapter()
+                    cmd.Connection = con
+                    sda.SelectCommand = cmd
+                    Using dt As New DataTable()
+                        sda.Fill(dt)
+                        Return dt
+                    End Using
+                End Using
+            End Using
+        End Using
+    End Function
+    Private Function GetAllCertificate() As DataTable
+        Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
+        Using con As New SqlConnection(constr)
+            Using cmd As New SqlCommand("Select * FROM [CROSCO_CBC]")
                 Using sda As New SqlDataAdapter()
                     cmd.Connection = con
                     sda.SelectCommand = cmd

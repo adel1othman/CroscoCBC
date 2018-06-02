@@ -106,14 +106,14 @@
     <div>
         <br />
         <div>
-            <input id="addRow" class="btn btn-group" type="button" value="add" />
+            <input id="addRow" class="btn btn-group" type="button" value="add"  onclick="pokazicbc();" />
             <%--<input id="DeleteRow" type="button" value="Delete" onclick="deleteRow();" />--%>
             <input id="btnExport" class="btn btn-success" type="button" value="Excel" />
             <input id="create-user" class="btn btn-success" type="button" value="Novi zaposlenik" />
             <input id="ljecnicki" class="btn btn-info" type="button" value="ljecnicki i kontakt" onclick="pokazi();" />
             
             <%--<input id="insertbtm" type="button" value="Insert" onclick="insret();" />--%>
-            <%--<input id="displaybtm" type="button" value="Display" onclick="display();" />--%>
+            <input id="displaybtm" type="button" value="Display" onclick="display();" />
             
         </div>
         <br />
@@ -121,8 +121,7 @@
             
         </asp:Panel>
         
-         <div id="dddd1">
-        </div>
+         
         <script>
             $(document).ready(function () {
                 $('#mytb1').DataTable({
@@ -228,7 +227,8 @@
 
                 });
                 var CBCtable = $('#mytbcbc').DataTable();
-                $('#mytbcbc tbody').on( 'click', 'button', function () {
+                $('#mytbcbc tbody').on('click', 'button', function () {
+                    event.preventDefault();
                     var data = CBCtable.row( $(this).parents('tr') ).data();
                     alert(data[0]);
                     var redid = data[0];
@@ -239,33 +239,42 @@
                     xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&opr=showCer', false);
                     xmlhttp.send(null);
                     redid = "";
-                    document.getelementbyid("panel1").value = xmlhttp.responsetext;
-                    //if (xmlhttp.readyState == 4) {
-                    //    if (xmlhttp.status == 200) {
-                    //        var resultText = xmlhttp.responseText;
-                    //        document.getelementbyid("panel1").value = xmlhttp.responsetext;
-                    //        if ($.fn.datatable.isdatatable("#panel1")) {
-                    //            $('#panel1').datatable().clear().destroy();
-                    //            $('#panel1').datatable({
-                    //                //select: true
-                    //                //"columndefs": [{
-                    //                //    "targets": -1,
-                    //                //    "data": null,
-                    //                //    "defaultcontent": "<button>click!</button>"
-                    //                //}]
-                    //            });
+                    ////document.getelementbyid("users").innerHTML = xmlhttp.responsetext;
+                    if (xmlhttp.readyState == 4) {
+                        if (xmlhttp.status == 200) {
+                            var resultText = xmlhttp.responseText;
+                            document.getElementById("Osbcbc").innerHTML = resultText; //xmlhttp.responsetext;
+                            if ($.fn.DataTable.isDataTable("#Osbcbc")) {
+                                $('#Osbcbc').DataTable().clear().destroy();
+                                $('#Osbcbc').DataTable({
+                                    //select: true
+                                    "columndefs": [{
+                                        "targets": -1,
+                                        "data": null,
+                                        "defaultcontent": "<button>Preview!</button>"
+                                    }]
+                                });
 
 
-                    //            //$('#mytb1').datatable();
-                    //            //$('#mytb1').datatable().clear().destroy();
+                                //$('#mytb1').datatable();
+                                //$('#mytb1').datatable().clear().destroy();
 
-                    //            //$('#mytb1').datatable().fndestroy();
+                                //$('#mytb1').datatable().fndestroy();
 
-                    //        }
-                    //    }
+                            } else {
+                                $('#Osbcbc').DataTable({
+                                    //select: true
+                                    "columndefs": [{
+                                        "targets": -1,
+                                        "data": null,
+                                        "defaultcontent": "<button>Preview!</button>"
+                                    }]
+                                });
+                            }
+                        }
                         
 
-                    //}
+                   }
                     
 
                     //display();
@@ -922,6 +931,14 @@
                     x.style.display = "none";
                 }
             }
+            function pokazicbc() {           
+                var x = document.getElementById("Osbcbc_wrapper");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
             //function updateRow() {
                 
             //    var trst = document.getElementsByClassName('selected').value;
@@ -968,7 +985,6 @@
                 //var tablica = $('#Panel2').value;
                 //tablica= xmlhttp.responseText;
                 //document.getElementById("mytb1").innerHTML = xmlhttp.responseText;
-
                 if (xmlhttp.readyState == 4) {
                     if (xmlhttp.status == 200) {
                         var resultText = xmlhttp.responseText;
@@ -977,11 +993,54 @@
                             $('#mytb1').DataTable().clear().destroy();
                             $('#mytb1').DataTable({
                                 //select: true
+                                "dom": '<"toolbar">lBfrtip',
+
+                                //"dom": '<"top"i>rt<"bottom"flp><"clear">',
+                                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
                                 "columnDefs": [{
                                     "targets": -1,
                                     "data": null,
-                                    "defaultContent": "<button>Click!</button>"
-                                }]
+                                    "defaultContent": "<button class='btn btn-danger'>Delete!</button>"
+                                }],
+                                "buttons": [
+                                    {
+                                        extend: 'copyHtml5',
+                                        text: '<i class="fa fa-files-o"></i>',
+                                        titleAttr: 'Copy'
+                                    },
+                                    {
+                                        extend: 'excelHtml5',
+                                        text: '<i class="fa fa-file-excel-o"></i>',
+                                        titleAttr: 'Excel'
+                                    },
+                                    {
+                                        extend: 'csvHtml5',
+                                        text: '<i class="fa fa-file-text-o"></i>',
+                                        titleAttr: 'CSV'
+                                    },
+                                    {
+                                        extend: 'pdfHtml5',
+                                        text: '<i class="fa fa-file-pdf-o"></i>',
+                                        titleAttr: 'PDF'
+                                    },
+                                    {
+                                        text: 'Add',
+                                        action: function (e, dt, node, config) {
+                                            alert('Button activated');
+                                        }
+                                    },
+                                    {
+                                        text: 'nesto',
+                                        action: function (e, dt, node, config) {
+                                            alert('Button activated');
+                                        }
+                                    },
+                                    'colvis'
+                                ]
+                                //"select": true  
+
+
                             });
 
 
@@ -990,9 +1049,63 @@
 
                             //$('#mytb1').DataTable().fnDestroy();
 
+
+
                         }
+                    //    else {
+                    //        $('#users').DataTable().clear().destroy();
+                    //        $('#users').DataTable({
+                    //            //select: true
+                    //            "dom": '<"toolbar">lBfrtip',
+
+                    //            //"dom": '<"top"i>rt<"bottom"flp><"clear">',
+                    //            //"lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+
+                    //            "columnDefs": [{
+                    //                "targets": -1,
+                    //                "data": null,
+                    //                "defaultContent": "<button class='btn btn-danger'>Delete!</button>"
+                    //            }],
+                    //            "buttons": [
+                    //                {
+                    //                    extend: 'copyHtml5',
+                    //                    text: '<i class="fa fa-files-o"></i>',
+                    //                    titleAttr: 'Copy'
+                    //                },
+                    //                {
+                    //                    extend: 'excelHtml5',
+                    //                    text: '<i class="fa fa-file-excel-o"></i>',
+                    //                    titleAttr: 'Excel'
+                    //                },
+                    //                {
+                    //                    extend: 'csvHtml5',
+                    //                    text: '<i class="fa fa-file-text-o"></i>',
+                    //                    titleAttr: 'CSV'
+                    //                },
+                    //                {
+                    //                    extend: 'pdfHtml5',
+                    //                    text: '<i class="fa fa-file-pdf-o"></i>',
+                    //                    titleAttr: 'PDF'
+                    //                },
+                    //                {
+                    //                    text: 'Add',
+                    //                    action: function (e, dt, node, config) {
+                    //                        alert('Button activated');
+                    //                    }
+                    //                },
+                    //                {
+                    //                    text: 'nesto',
+                    //                    action: function (e, dt, node, config) {
+                    //                        alert('Button activated');
+                    //                    }
+                    //                },
+                    //                'colvis'
+                    //            ]
+                    //        }
+                    ////document.getElementById("dddd1").value = xmlhttp.responseText;
+
+                    //    }
                     }
-                    //document.getElementById("dddd1").value = xmlhttp.responseText;
 
                 }
             }
@@ -1003,29 +1116,22 @@
         <asp:Panel ID="Panel3" ClientIDMode="Static" runat="server">
             
         </asp:Panel>
-        <%--<asp:Panel ID="Panel1" ClientIDMode="Static" runat="server">
+        <asp:Panel ID="Panel1" ClientIDMode="Static" runat="server">
             
-        </asp:Panel>--%>
-
-        <div ID="Panel1">
-            
+        </asp:Panel>
+        <div id="dddd">
             <table id="Osbcbc">
                 <thead>
-                    <tr>
-                        <th>Ime</th>
-                        <th>PurTočke</th>
-                        <th>MCexp</th>
-                        <th>RSNexp</th>
-                        <th>RSNsexp</th>
-                    </tr>
+                    
                 </thead>
                 <tbody>
-                    <tr>
-                        
-                    </tr>
                 </tbody>
-            </table>                   
+            </table>     
         </div>
+        <%--<div ID="Panel1">
+            
+                          
+        </div>--%>
         <%--<script>
         function potablicu() {
             $.ajax({

@@ -44,7 +44,12 @@ Partial Public Class InsertPage
             'End If
 
         ElseIf opr = "display" Then
-            Dim dt As DataTable = Me.GetData()
+            RowId = Request.QueryString("id").ToString()
+            MsgBox(RowId)
+            'OsbniCertifikati(RowId)
+            Dim kadrov As Integer = Convert.ToInt32(RowId)
+
+            Dim dt As DataTable = Me.GetCertifikati(kadrov)
 
             'Building an HTML string.
             'Dim html As New StringBuilder()
@@ -52,7 +57,7 @@ Partial Public Class InsertPage
             'Table start.
             'html.Append("<table id='mytb1' border = '1' cellspacing='1' class='tablesorter'>")
             ' html.Append("<table id='mytb1' Class='table table-striped table-bordered' style='width:100%'>")
-            Response.Write("<table id='mytb1' class='table table-striped table-bordered dataTable no-footer' style='width:100%' role='grid' aria-describedby='mytb1_info'>")
+            Response.Write("<table id='Osbcbc' class='table table-striped table-bordered dataTable no-footer' style='width:100%' role='grid' aria-describedby='mytb1_info'>")
 
             'Building the Header row.
             'html.Append("<thead>")
@@ -102,7 +107,7 @@ Partial Public Class InsertPage
 
                     Dim test As String = row(column.ColumnName).ToString()
                     Response.Write(test)
-                    'MsgBox(test)
+                    MsgBox(test)
                     Response.Write("</span>")
                     'html.Append("</td>")
                     Response.Write("</td>")
@@ -168,7 +173,7 @@ Partial Public Class InsertPage
             Response.Write("<thead>")
             'html.Append("<tr>")
             Response.Write("<tr role='row'>")
-            Dim i As Integer = 0
+            Dim cbci As Integer = 0
             For Each column As DataColumn In cbcdt.Columns
 
                 Dim stri As String
@@ -182,7 +187,7 @@ Partial Public Class InsertPage
                 'stri = stri & "'" & "#tb1" & "','.item'," & "'td:nth-child(" & i & ")')' " & "style='cursor:pointer'>"
                 'html.Append(stri)
                 Response.Write(stri)
-                i = i + 1
+                cbci = cbci + 1
                 'html.Append(column.ColumnName)
                 Dim textToPass As String = column.ColumnName.ToString()
                 Response.Write(textToPass)
@@ -211,7 +216,7 @@ Partial Public Class InsertPage
 
                     Dim test As String = row(column.ColumnName).ToString()
                     Response.Write(test)
-                    'MsgBox(test)
+                    MsgBox(test)
                     Response.Write("</span>")
                     'html.Append("</td>")
                     Response.Write("</td>")
@@ -319,9 +324,10 @@ Partial Public Class InsertPage
         Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
         Dim kdr As Integer = kadid
         Using con As New SqlConnection(constr)
-            Dim scom As String = "Select Ime, [PUR točke], MCexp, RSNexp, RSNsexp FROM CROSCO_CBC where [Kadrovski broj] = " & kdr
-
-            Using cmd As New SqlCommand(scom)
+            'Dim scom As String = "Select Ime, [PUR točke] As PurTocke, MCexp, RSNexp, RSNsexp FROM CROSCO_CBC where [Kadrovski broj] = " & kdr
+            Dim scom As String = "Select Ime, [PUR točke] As PurTocke, MCexp, RSNexp, RSNsexp FROM CROSCO_CBC where [Kadrovski broj] = " & kdr
+            MsgBox(scom)
+            Using cmd As New SqlCommand("Select Ime, [PUR točke] As PurTocke, MCexp, RSNexp, RSNsexp FROM CROSCO_CBC where [Kadrovski broj] = " & kdr)
                 Using sda As New SqlDataAdapter()
                     cmd.Connection = con
                     sda.SelectCommand = cmd
