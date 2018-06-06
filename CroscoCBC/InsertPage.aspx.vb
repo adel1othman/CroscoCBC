@@ -125,7 +125,7 @@ Partial Public Class InsertPage
             RowId = Request.QueryString("id").ToString()
 
             Dim comstrin As String
-            comstrin = "DELETE FROM CROSCO_CBC WHERE ID =" & RowId
+            comstrin = "DELETE FROM CROSCO_CBC WHERE [Kadrovski broj] =" & RowId
             MsgBox(comstrin)
             Dim con As New SqlConnection(constr)
             Dim cmd As New SqlCommand
@@ -142,7 +142,7 @@ Partial Public Class InsertPage
             newValu1 = Request.QueryString("newva").ToString()
             columhed = Request.QueryString("ched").ToString()
 
-            comstring = "UPDATE CROSCO_CBC SET " & columhed & " = '" & newValu1 & "' WHERE ID = " & RowId
+            comstring = "UPDATE CROSCO_CBC SET " & columhed & " = '" & newValu1 & "' WHERE [Kadrovski broj] = " & RowId
             'script za rename column name sp_rename "dbo.CROSCO_CBC.Kadr#br#", "Kadrovski broj", 'COLUMN';
             'MsgBox(comstring & " " & RowId & " " & columhed & " " & newValu1)
 
@@ -195,9 +195,9 @@ Partial Public Class InsertPage
                 'html.Append("</th>")
                 Response.Write("</th>")
             Next
-            'Response.Write("<th style='cursor:pointer'>")
-            'Response.Write("Fun")
-            'Response.Write("</th>")
+            Response.Write("<th style='cursor:pointer'>")
+            Response.Write("Fun")
+            Response.Write("</th>")
             'html.Append("</tr>")
             Response.Write("</tr>")
             'html.Append("</thead>")
@@ -222,9 +222,9 @@ Partial Public Class InsertPage
                     Response.Write("</td>")
                 Next
                 'html.Append("</tr>")
-                'Response.Write("<td Class='btn'>")
-                'Response.Write("<input type='button' value='Delete' onclick='deleteRow();' />")
-                'Response.Write("</td>")
+                Response.Write("<td Class='btn'>")
+                Response.Write("Perview!")
+                Response.Write("</td>")
                 Response.Write("</tr>")
             Next
             'html.Append("</tbody>")

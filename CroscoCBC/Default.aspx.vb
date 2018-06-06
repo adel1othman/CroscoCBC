@@ -19,6 +19,9 @@ Public Class _Default
             'Building the Header row.
             html.Append("<thead>")
             html.Append("<tr>")
+            html.Append("<th style='cursor:pointer'>")
+            html.Append("Certifikati!")
+            html.Append("</th>")
             Dim i As Integer = 0
             For Each column As DataColumn In dt.Columns
 
@@ -39,12 +42,19 @@ Public Class _Default
             html.Append("<th style='cursor:pointer'>")
             html.Append("Fun")
             html.Append("</th>")
+
             html.Append("</tr>")
             html.Append("</thead>")
             'html.Append("<tbody id='myTable'>")
             'Building the Data rows.
             For Each row As DataRow In dt.Rows
                 html.Append("<tr class='item'>")
+                html.Append("<td Class='txtBox'>")
+                html.Append("<span>")
+                html.Append("<Certifikati!>")
+                'html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
+                html.Append("</span>")
+                html.Append("</td>")
                 For Each column As DataColumn In dt.Columns
                     html.Append("<td Class='txtBox'>")
                     html.Append("<span>")
@@ -53,11 +63,16 @@ Public Class _Default
                     html.Append("</td>")
 
                 Next
-                html.Append("<td Class='btn'>")
+
+                html.Append("<td Class='txtBox'>")
+                html.Append("<span>")
                 html.Append("<Delete>")
+                html.Append("</span>")
                 'html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
 
                 html.Append("</td>")
+
+
                 html.Append("</tr>")
 
             Next
@@ -107,6 +122,7 @@ Public Class _Default
             cbchtml.Append("<th style='cursor:pointer'>")
             cbchtml.Append("Fun")
             cbchtml.Append("</th>")
+
             cbchtml.Append("</tr>")
             cbchtml.Append("</thead>")
             'html.Append("<tbody id='myTable'>")
@@ -121,8 +137,9 @@ Public Class _Default
                     cbchtml.Append("</td>")
 
                 Next
-                cbchtml.Append("<td Class='btn'>")
+                cbchtml.Append("<td Class='txtBox'>")
                 cbchtml.Append("<Delete>")
+
                 'html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
 
                 cbchtml.Append("</td>")
@@ -211,7 +228,7 @@ Public Class _Default
     Private Function GetData() As DataTable
         Dim constr As String = System.Configuration.ConfigurationManager.ConnectionStrings("CROSCO_CBC_DataBazeConnectionString").ConnectionString
         Using con As New SqlConnection(constr)
-            Using cmd As New SqlCommand("Select [ID], [Kadrovski broj] AS Kadrovski_broj, [Ime], [Prezime], [Pozicija], [Pozicija engl] AS Pozicija_engl FROM [CROSCO_CBC]")
+            Using cmd As New SqlCommand("Select [Kadrovski broj] AS Kadrovski_broj, [Ime], [Prezime], [Pozicija], [Pozicija engl] AS Pozicija_engl FROM [CROSCO_CBC]")
                 Using sda As New SqlDataAdapter()
                     cmd.Connection = con
                     sda.SelectCommand = cmd

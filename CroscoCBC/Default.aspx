@@ -35,8 +35,8 @@
     
     <script src="Scripts/jquery.dataTables.min.js"></script>
     <script src="Scripts/dataTables.bootstrap.min.js"></script>
-    <link href="Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="Content/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <%--<link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="Content/dataTables.bootstrap.min.css" rel="stylesheet" />--%>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <%--<link rel="stylesheet" href="/resources/demos/style.css">--%>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"/>
@@ -113,7 +113,7 @@
             <input id="ljecnicki" class="btn btn-info" type="button" value="ljecnicki i kontakt" onclick="pokazi();" />
             
             <%--<input id="insertbtm" type="button" value="Insert" onclick="insret();" />--%>
-            <input id="displaybtm" type="button" value="Display" onclick="display();" />
+            <%--<input id="displaybtm" type="button" value="Display" onclick="display();" />--%>
             
         </div>
         <br />
@@ -130,13 +130,25 @@
                     "dom": '<"toolbar">lBfrtip',
                     
                     //"dom": '<"top"i>rt<"bottom"flp><"clear">',
-                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Sve"]],
                     
-                    "columnDefs": [ {
+                    "columnDefs": [
+                        //{
+                        ////"targets": -2,
+                        ////"data": null,
+                        ////"defaultContent": "<button class='btn btn-info'>Certifikati!</button>"
+                        //},
+                        {
                         "targets": -1,
                         "data": null,
                         "defaultContent": "<button class='btn btn-danger'>Delete!</button>"
-                    }],
+                        },
+                        {
+                        "targets": 0,
+                        "data": null,
+                        "defaultContent": "<button class='btn btn-info'>Certifikati!</button>"
+                        },
+                    ],
                     "buttons": [
                         {
                             extend:    'copyHtml5',
@@ -170,7 +182,11 @@
                                 alert( 'Button activated' );
                             }
                         },
-                        'colvis'                                                
+                        {
+                            extend:    'colvis',
+                            text: 'Pokaži',
+                            
+                        }                                                
                     ]
                     //"select": true  
 
@@ -304,12 +320,12 @@
                     var data = table1.row(this).data();
                     
                     var redid;
-                    if (data[0] == undefined) {
+                    if (data[1] == undefined) {
                         redid = redid1[0]; 
                     }
                     else {
                         redid1.shift();
-                        redid1.push(data[0]);
+                        redid1.push(data[1]);
                         redid = redid1[0];
                         var i = redid.length;
                         i = i-13;
@@ -364,29 +380,79 @@
                 
                  $('#mytb1 tbody').on( 'click', 'button', function () {
                     var data = table2.row( $(this).parents('tr') ).data();
-                    alert(data[0]);
-                    var redid = data[0];
+                    alert(data[1]);
+                    var redid = data[1];
                     var i = redid.length;
                     i = i-13;
-                    redid = redid.substr(6, i);                   
-                    var xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&opr=delete', false);
-                    xmlhttp.send(null);
-                    redid = "";
-                     table2
-                         .row($(this).parents('tr'))
-                         .remove()
-                         .draw();
+                    redid = redid.substr(6, i); 
+                    var html = $(this).text() 
+                    alert(html);
+                    if (html == "Delete!") {
+                         var xmlhttp = new XMLHttpRequest();
+                         xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&opr=delete', false);
+                         xmlhttp.send(null);
+                         redid = "";
+                         table2
+                             .row($(this).parents('tr'))
+                             .remove()
+                             .draw();
+                    }
+                    else if (html == "Certifikati!") {
+                        event.preventDefault();
+                        var xmlhttp = new XMLHttpRequest();
+                        xmlhttp.open('Get', 'InsertPage.aspx?id=' + redid + '&opr=showCer', false);
+                        xmlhttp.send(null);
+                        redid = "";
+                        ////document.getelementbyid("users").innerHTML = xmlhttp.responsetext;
+                        if (xmlhttp.readyState == 4) {
+                            if (xmlhttp.status == 200) {
+                                var resultText = xmlhttp.responseText;
+                                document.getElementById("Osbcbc").innerHTML = resultText; //xmlhttp.responsetext;
+                                if ($.fn.DataTable.isDataTable("#Osbcbc")) {
+                                    $('#Osbcbc').DataTable().clear().destroy();
+                                    $('#Osbcbc').DataTable({
+                                        //select: true
+                                        "columndefs": [{
+                                            "targets": -1,
+                                            "data": null,
+                                            "defaultcontent": "<button class='btn btn-info'>Preview!</button>"
+                                        }]
+                                    });
+
+
+                                    //$('#mytb1').datatable();
+                                    //$('#mytb1').datatable().clear().destroy();
+
+                                    //$('#mytb1').datatable().fndestroy();
+
+                                } else {
+                                    $('#Osbcbc').DataTable({
+                                        //select: true
+                                        "columndefs": [{
+                                            "targets": -1,
+                                            "data": null,
+                                            "defaultcontent": "<button class='btn btn-info'>Preview!</button>"
+                                        }]
+                                    });
+                                }
+                            }
+                        
+
+                       }
+                    }
                     
 
                     //display();
                 } );
                 $(document).on('click', '#mytb1 td', function () {
-                    var html = $(this).text()
+                    var html = $(this).text();
                     var input = $('<input type="text" />');
                     input.val(html);
                     var thiscol = getcolhed();
                     if (thiscol == "Fun") {
+                      
+                    }
+                    else if (thiscol == "Certifikati!") {
                       
                     }
                     else if (thiscol == undefined) {
@@ -516,6 +582,9 @@
                     if (thiscol == "Fun") {
 
                     }
+                    else if (thiscol == "Certifikati!") {
+
+                    }
                     else if (thiscol == undefined) {
 
                     }
@@ -635,6 +704,7 @@
         <%--<button id="btnExport" onclick="fnExcelReport();"> EXPORT</button>--%>
     <script>
         function fnExcelReport(e) {
+
             $(".truncatedData").hide();
             $(".completeData").show();
             //alert("Hello! Dawood.");
