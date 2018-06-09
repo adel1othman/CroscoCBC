@@ -222,7 +222,7 @@ Partial Public Class InsertPage
                     Response.Write("</td>")
                 Next
                 'html.Append("</tr>")
-                Response.Write("<td Class='btn'>")
+                Response.Write("<td Class='btn btn-info'>")
                 Response.Write("Perview!")
                 Response.Write("</td>")
                 Response.Write("</tr>")

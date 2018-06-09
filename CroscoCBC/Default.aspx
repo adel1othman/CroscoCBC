@@ -139,12 +139,12 @@
                         ////"defaultContent": "<button class='btn btn-info'>Certifikati!</button>"
                         //},
                         {
-                        "targets": -1,
+                        "targets": -2,
                         "data": null,
                         "defaultContent": "<button class='btn btn-danger'>Delete!</button>"
                         },
                         {
-                        "targets": 0,
+                        "targets": -1,
                         "data": null,
                         "defaultContent": "<button class='btn btn-info'>Certifikati!</button>"
                         },
@@ -320,12 +320,12 @@
                     var data = table1.row(this).data();
                     
                     var redid;
-                    if (data[1] == undefined) {
+                    if (data[0] == undefined) {
                         redid = redid1[0]; 
                     }
                     else {
                         redid1.shift();
-                        redid1.push(data[1]);
+                        redid1.push(data[0]);
                         redid = redid1[0];
                         var i = redid.length;
                         i = i-13;
@@ -380,8 +380,8 @@
                 
                  $('#mytb1 tbody').on( 'click', 'button', function () {
                     var data = table2.row( $(this).parents('tr') ).data();
-                    alert(data[1]);
-                    var redid = data[1];
+                    alert(data[0]);
+                    var redid = data[0];
                     var i = redid.length;
                     i = i-13;
                     redid = redid.substr(6, i); 

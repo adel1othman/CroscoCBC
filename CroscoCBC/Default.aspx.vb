@@ -19,9 +19,9 @@ Public Class _Default
             'Building the Header row.
             html.Append("<thead>")
             html.Append("<tr>")
-            html.Append("<th style='cursor:pointer'>")
-            html.Append("Certifikati!")
-            html.Append("</th>")
+            'html.Append("<th style='cursor:pointer'>")
+            'html.Append("Certifikati!")
+            'html.Append("</th>")
             Dim i As Integer = 0
             For Each column As DataColumn In dt.Columns
 
@@ -42,19 +42,21 @@ Public Class _Default
             html.Append("<th style='cursor:pointer'>")
             html.Append("Fun")
             html.Append("</th>")
-
+            html.Append("<th style='cursor:pointer'>")
+            html.Append("Certifikati!")
+            html.Append("</th>")
             html.Append("</tr>")
             html.Append("</thead>")
             'html.Append("<tbody id='myTable'>")
             'Building the Data rows.
             For Each row As DataRow In dt.Rows
                 html.Append("<tr class='item'>")
-                html.Append("<td Class='txtBox'>")
-                html.Append("<span>")
-                html.Append("<Certifikati!>")
-                'html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
-                html.Append("</span>")
-                html.Append("</td>")
+                'html.Append("<td Class='txtBox'>")
+                'html.Append("<span>")
+                'html.Append("<Certifikati!>")
+                ''html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
+                'html.Append("</span>")
+                'html.Append("</td>")
                 For Each column As DataColumn In dt.Columns
                     html.Append("<td Class='txtBox'>")
                     html.Append("<span>")
@@ -71,7 +73,12 @@ Public Class _Default
                 'html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
 
                 html.Append("</td>")
-
+                html.Append("<td Class='txtBox'>")
+                html.Append("<span>")
+                html.Append("<Certifikati!>")
+                'html.Append("<input type='button' value='Delete' onclick='deleteRow();' />")
+                html.Append("</span>")
+                html.Append("</td>")
 
                 html.Append("</tr>")
 
