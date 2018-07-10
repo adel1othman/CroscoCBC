@@ -215,15 +215,16 @@ Partial Public Class InsertPage
                     'html.Append(row(column.ColumnName))
 
                     Dim test As String = row(column.ColumnName).ToString()
-                    Response.Write(test)
-                    MsgBox(test)
+                    'Response.Write(test)
+                    Response.Write("<a href ='Certifikati/166126/1.pdf'>" & test & "</a>")
+                    'MsgBox(test)
                     Response.Write("</span>")
                     'html.Append("</td>")
                     Response.Write("</td>")
                 Next
                 'html.Append("</tr>")
                 Response.Write("<td Class='btn btn-info'>")
-                Response.Write("Perview!")
+                    Response.Write("Perview!")
                 Response.Write("</td>")
                 Response.Write("</tr>")
             Next

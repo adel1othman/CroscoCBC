@@ -784,11 +784,13 @@
           emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
           Ime = $("#Ime"),
           Prezime = $("#Prezime"),
-          kadrov = $( "#KadrovskiBroj" ),
+          kadrov = $("#KadrovskiBroj"),
+          pozicija = $("#Pozicja"),
+          pozicijaEng = $( "#PozicjaEng" ),
           //email = $( "#email" ),
           //password = $( "#password" ),
           //allFields = $( [] ).add( Ime ).add( Prezime ).add( email ).add( password ),
-          allFields = $( [] ).add( Ime ).add( Prezime ).add( kadrov ),
+          allFields = $( [] ).add( Ime ).add( Prezime ).add( kadrov ).add( pozicija ).add( pozicijaEng ),
           tips = $(".validateTips");
 
  
@@ -839,27 +841,31 @@
           //valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
  
           if ( valid ) {
-              $("#mytb1 tbody").append("<tr>" +
-                "<td><span>" + "" + "</span></td>" +
-                "<td><span>" + kadrov.val() + "</span></td>" +
-                "<td><span>" + Ime.val() + "</span></td>" +
-                "<td><span>" + Prezime.val() + "</span></td>" +
-                "<td><span>" + "Pozicija" + "</span></td>" +
-                "<td><span>" + "Pozicija eng" + "</span></td>" +
-                "<td><span>" + "<button class='btn btn-danger'>Delete!</button>" + "</span></td>" +
-                //"<td>" + email.val() + "</td>" +
-                //"<td>" + password.val() + "</td>" +
-                "</tr>");
-                var name = document.getElementById("Ime").value;
-                var surname = document.getElementById("Prezime").value;
-                var Kadid = document.getElementById("KadrovskiBroj").value;
-                var xmlhttp = new XMLHttpRequest();
-                xmlhttp.open('Get', 'InsertPage.aspx?nm=' + name + '&sr=' + surname + '&kdr=' + Kadid + '&opr=insert', true);
-                xmlhttp.send(null);
-                document.getElementById("Ime").value = "";
-                document.getElementById("Prezime").value = "";
-                document.getElementById("KadrovskiBroj").value = "";
-              alert("ažurirano");
+            $("#mytb1 tbody").append("<tr>" +
+            "<td><span>" + "" + "</span></td>" +
+            "<td><span>" + kadrov.val() + "</span></td>" +
+            "<td><span>" + Ime.val() + "</span></td>" +
+            "<td><span>" + Prezime.val() + "</span></td>" +
+            "<td><span>" + "Pozicija" + "</span></td>" +
+            "<td><span>" + "Pozicija eng" + "</span></td>" +
+            "<td><span>" + "<button class='btn btn-danger'>Delete!</button>" + "</span></td>" +
+            //"<td>" + email.val() + "</td>" +
+            //"<td>" + password.val() + "</td>" +
+            "</tr>");
+            var name = document.getElementById("Ime").value;
+            var surname = document.getElementById("Prezime").value;
+            var Kadid = document.getElementById("KadrovskiBroj").value;
+            var poz = document.getElementById("Pozicja").value;
+            var pozEn = document.getElementById("PozicjaEng").value;
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('Get', 'InsertPage.aspx?nm=' + name + '&sr=' + surname + '&kdr=' + Kadid + '&po=' + poz + '&Epo=' + pozEn + '&opr=insert', true);
+            xmlhttp.send(null);
+            document.getElementById("Ime").value = "";
+            document.getElementById("Prezime").value = "";
+            document.getElementById("KadrovskiBroj").value = "";
+            poz = document.getElementById("Pozicja").value = "";
+            pozEn = document.getElementById("PozicjaEng").value = "";
+            alert("ažurirano");
 
             dialog.dialog( "close" );
           }
@@ -907,7 +913,7 @@
                     <input type="text" name="Prezime" id="Prezime" value="Testić" class="text ui-widget-content ui-corner-all">
                     <label for="Pozicja">Pozicja</label>
                     <input type="text" name="Pozicja" id="Pozicja" value="" class="text ui-widget-content ui-corner-all">
-                    <label for="PozicjaEng">PozicjaEng</label>
+                    <label for="PozicjaEng">Pozicja Eng</label>
                     <input type="text" name="PozicjaEng" id="PozicjaEng" value="" class="text ui-widget-content ui-corner-all">
                     <label for="email">Email</label>
                     <input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
@@ -1264,7 +1270,7 @@
         <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
         <p><a href="http://www.asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a>,</p>
     </div>
-
+        
     <div class="row">
         <div class="col-md-4">
             <h2>Getting Started</h2>
